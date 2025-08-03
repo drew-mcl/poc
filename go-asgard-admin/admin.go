@@ -31,7 +31,7 @@ import (
 var adminCmd = &cobra.Command{
 	Use:   "admin",
 	Short: "Interactive admin tool for dynamic gRPC execution",
-	Long:  "Discovers services via Consul and allows dynamic interaction with their gRPC methods.",
+	Long:  "Discovers services via Consul and allows dynamic interaction with their gRPC methods. By default shows only healthy instances.",
 	Run:   runAdmin,
 }
 
@@ -53,6 +53,7 @@ func init() {
 	adminCmd.Flags().StringP("service", "s", "", "Target specific service (skip service selection)")
 	adminCmd.Flags().StringP("instance", "i", "", "Target specific instance (skip instance selection)")
 	adminCmd.Flags().BoolP("auto-select", "a", false, "Auto-select first available service/instance")
+	adminCmd.Flags().BoolP("all", "", false, "Show all instances (including unhealthy) - default is healthy only")
 	
 	fixConfigCmd.Flags().StringP("consul", "c", "localhost:8500", "Consul address")
 }
@@ -70,6 +71,7 @@ func runAdmin(cmd *cobra.Command, args []string) {
 	targetService, _ := cmd.Flags().GetString("service")
 	targetInstance, _ := cmd.Flags().GetString("instance")
 	autoSelect, _ := cmd.Flags().GetBool("auto-select")
+	showAll, _ := cmd.Flags().GetBool("all")
 
 	client, err := consulapi.NewClient(&consulapi.Config{Address: consulAddr})
 	if err != nil {
@@ -89,7 +91,7 @@ func runAdmin(cmd *cobra.Command, args []string) {
 			return
 		}
 
-		selectedInstance, err := selectInstance(client, reader, selectedService, targetInstance, autoSelect)
+		selectedInstance, err := selectInstance(client, reader, selectedService, targetInstance, autoSelect, showAll)
 		if err != nil {
 			red("Error selecting instance: %v\n", err)
 			continue
@@ -173,8 +175,35 @@ func selectService(client *consulapi.Client, reader *bufio.Reader, targetService
 	}
 }
 
-func selectInstance(client *consulapi.Client, reader *bufio.Reader, serviceName string, targetInstance string, autoSelect bool) (*InstanceInfo, error) {
-	instances, _, err := client.Catalog().Service(serviceName, "", nil)
+func selectInstance(client *consulapi.Client, reader *bufio.Reader, serviceName string, targetInstance string, autoSelect bool, showAll bool) (*InstanceInfo, error) {
+	// Get instances based on showAll flag
+	var instances []*consulapi.CatalogService
+	var err error
+	
+	if showAll {
+		// Get all instances from catalog (including unhealthy)
+		instances, _, err = client.Catalog().Service(serviceName, "", nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get instances for %s: %v", serviceName, err)
+		}
+	} else {
+		// Get only healthy instances (default behavior)
+		healthInstances, _, err := client.Health().Service(serviceName, "", true, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get healthy instances for %s: %v", serviceName, err)
+		}
+		// Convert health instances to catalog instances
+		for _, healthInstance := range healthInstances {
+			instances = append(instances, &consulapi.CatalogService{
+				ServiceID:      healthInstance.Service.ID,
+				ServiceName:    healthInstance.Service.Service,
+				ServiceAddress: healthInstance.Service.Address,
+				ServicePort:    healthInstance.Service.Port,
+				ServiceMeta:    healthInstance.Service.Meta,
+				ServiceTags:    healthInstance.Service.Tags,
+			})
+		}
+	}
 	if err != nil {
 		return nil, fmt.Errorf("failed to get instances for %s: %v", serviceName, err)
 	}
@@ -213,11 +242,44 @@ func selectInstance(client *consulapi.Client, reader *bufio.Reader, serviceName 
 	}
 
 	cyan("\n📦 Instances for %s:\n", serviceName)
+	if showAll {
+		cyan("(Showing all instances including unhealthy)\n")
+	} else {
+		cyan("(Showing only healthy instances - use --all to see all)\n")
+	}
+	
 	for i, instance := range instanceInfos {
-		yellow("  %d. %s (%s:%d)\n", i+1, instance.ServiceID, instance.ServiceAddress, instance.ServicePort)
-		if instance.GRPCPort > 0 {
-			cyan("     🔌 gRPC: %s:%d\n", instance.ServiceAddress, instance.GRPCPort)
+		// Get health status for this instance
+		healthStatus := "✅ healthy"
+		
+		// Always check health status for display purposes
+		healthChecks, _, err := client.Health().Checks(instance.ServiceID, nil)
+		if err == nil {
+			hasCritical := false
+			hasWarning := false
+			for _, check := range healthChecks {
+				if check.ServiceID == instance.ServiceID {
+					switch check.Status {
+					case "critical":
+						hasCritical = true
+					case "warning":
+						hasWarning = true
+					}
+				}
+			}
+			if hasCritical {
+				healthStatus = "❌ critical"
+			} else if hasWarning {
+				healthStatus = "⚠️  warning"
+			} else {
+				healthStatus = "✅ healthy"
+			}
+		} else {
+			healthStatus = "❓ unknown"
 		}
+		
+		yellow("  %d. %s (%s:%d) %s\n", i+1, instance.ServiceID, instance.ServiceAddress, instance.ServicePort, healthStatus)
+		//cyan("     🔌 Admin: %s:%d\n", instance.ServiceAddress, adminPort)
 	}
 
 	for {
@@ -237,11 +299,15 @@ func selectInstance(client *consulapi.Client, reader *bufio.Reader, serviceName 
 }
 
 func connectAndExecute(instance *InstanceInfo, reader *bufio.Reader) error {
-	grpcPort := instance.ServicePort
-	if instance.GRPCPort > 0 {
-		grpcPort = instance.GRPCPort
+	// Get admin port from metadata
+	adminPort := instance.ServicePort // fallback to main port
+	if adminPortStr, exists := instance.ServiceMeta["admin-port"]; exists {
+		if port, err := strconv.Atoi(adminPortStr); err == nil {
+			adminPort = port
+		}
 	}
-	grpcAddr := fmt.Sprintf("%s:%d", instance.ServiceAddress, grpcPort)
+	
+	grpcAddr := fmt.Sprintf("%s:%d", instance.ServiceAddress, adminPort)
 	blue("🔌 Connecting to gRPC server at %s...\n", grpcAddr)
 
 	// Try to establish connection with timeout and retry logic

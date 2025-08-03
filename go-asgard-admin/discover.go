@@ -14,16 +14,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-// FixConfig represents FIX configuration for a service
-type FixConfig struct {
-	SocketHost        string `json:"socket_host"`
-	SocketPort        int    `json:"socket_port"`
-	ClientID          string `json:"client_id"`
-	TargetCompID      string `json:"target_comp_id"`
-	SenderCompID      string `json:"sender_comp_id"`
-	HeartbeatInterval int    `json:"heartbeat_interval"`
-	FixVersion        string `json:"fix_version"`
-}
+
 
 // GetFixConfig retrieves FIX configuration for a specific service via Consul discovery
 func GetFixConfig(consulAddr, serviceName string) (*FixConfig, error) {
@@ -47,7 +38,7 @@ func GetFixConfig(consulAddr, serviceName string) (*FixConfig, error) {
 	grpcPort := instance.ServicePort
 	if grpcPort == 0 {
 		// Try to get gRPC port from metadata
-		if grpcPortStr, exists := instance.ServiceMeta["grpc_port"]; exists {
+		if grpcPortStr, exists := instance.ServiceMeta["admin-port"]; exists {
 			if port, err := strconv.Atoi(grpcPortStr); err == nil {
 				grpcPort = port
 			}
@@ -131,16 +122,19 @@ func GetFixConfigForService(consulAddr, serviceName string) {
 	fmt.Printf("  FIX Version: %s\n", config.FixVersion)
 }
 
+
+
 var discoverCmd = &cobra.Command{
 	Use:   "discover",
-	Short: "Discover services and their online instances from Consul",
-	Long:  "Lists all services registered with Consul and shows their online instances",
+	Short: "Discover services with health status and checks",
+	Long:  "Lists all services registered with Consul and shows their health status, instances, and health checks",
 	Run:   runDiscover,
 }
 
 func init() {
 	discoverCmd.Flags().StringP("consul", "c", "localhost:8500", "Consul address")
 	discoverCmd.Flags().StringP("service", "s", "", "Filter by specific service name")
+	discoverCmd.Flags().BoolP("all", "", false, "Show all instances (including unhealthy) - default is healthy only")
 }
 
 // CORRECTED: The 'tags' parameter is now correctly defined as []string.
@@ -174,6 +168,7 @@ func getInstanceInfo(id, service, addr string, port int, meta map[string]string,
 func runDiscover(cmd *cobra.Command, args []string) {
 	consulAddr, _ := cmd.Flags().GetString("consul")
 	serviceFilter, _ := cmd.Flags().GetString("service")
+	showAll, _ := cmd.Flags().GetBool("all")
 
 	client, err := consulapi.NewClient(&consulapi.Config{Address: consulAddr})
 	if err != nil {
@@ -181,11 +176,11 @@ func runDiscover(cmd *cobra.Command, args []string) {
 	}
 
 	// CORRECTED: This is the proper way to define the color functions.
-	green := color.New(color.FgGreen).Printf
 	blue := color.New(color.FgBlue).Printf
 	yellow := color.New(color.FgYellow).Printf
 	red := color.New(color.FgRed).Printf
 	cyan := color.New(color.FgCyan).Printf
+	magenta := color.New(color.FgMagenta).Printf
 
 	services, _, err := client.Catalog().Services(nil)
 	if err != nil {
@@ -212,38 +207,156 @@ func runDiscover(cmd *cobra.Command, args []string) {
 	cyan("🔍 Discovered %d services in Consul:\n\n", len(serviceNames))
 
 	for _, serviceName := range serviceNames {
-		instances, _, err := client.Catalog().Service(serviceName, "", nil)
-		if err != nil {
-			red("❌ Failed to get instances for %s: %v\n", serviceName, err)
-			continue
+		// Get instances based on showAll flag
+		var instances []*consulapi.ServiceEntry
+		var err error
+		
+		if showAll {
+			// Get all instances from catalog (including unhealthy)
+			catalogInstances, _, err := client.Catalog().Service(serviceName, "", nil)
+			if err != nil {
+				red("❌ Failed to get instances for %s: %v\n", serviceName, err)
+				continue
+			}
+			// Convert to ServiceEntry format for consistency
+			for _, catInstance := range catalogInstances {
+				instances = append(instances, &consulapi.ServiceEntry{
+					Service: &consulapi.AgentService{
+						ID:      catInstance.ServiceID,
+						Service:  catInstance.ServiceName,
+						Address:  catInstance.ServiceAddress,
+						Port:     catInstance.ServicePort,
+						Meta:     catInstance.ServiceMeta,
+						Tags:     catInstance.ServiceTags,
+					},
+					Checks: []*consulapi.HealthCheck{}, // Will be populated below
+				})
+			}
+		} else {
+			// Get only healthy instances (default behavior)
+			instances, _, err = client.Health().Service(serviceName, "", true, nil)
+			if err != nil {
+				red("❌ Failed to get healthy instances for %s: %v\n", serviceName, err)
+				continue
+			}
 		}
 
-		green("📦 Service: %s\n", serviceName)
-		blue("   📍 Instances: %d\n", len(instances))
-
-		if len(instances) > 0 {
-			yellow("   📋 Instances:\n")
-			for i, instance := range instances {
-				info := getInstanceInfo(
-					instance.ServiceID,
-					instance.ServiceName,
-					instance.ServiceAddress,
-					instance.ServicePort,
-					instance.ServiceMeta,
-					instance.ServiceTags,
-				)
-				yellow("      %d. %s (%s:%d)\n", i+1, info.ServiceID, info.ServiceAddress, info.ServicePort)
-
-				if info.AdminPort > 0 {
-					cyan("         🔧 Admin: %s:%d\n", info.ServiceAddress, info.AdminPort)
-				}
-				if info.GRPCPort > 0 {
-					cyan("         🔌 gRPC: %s:%d\n", info.ServiceAddress, info.GRPCPort)
-				}
-				if len(info.ServiceTags) > 0 {
-					cyan("         🏷️  Tags: %v\n", info.ServiceTags)
+		// Determine overall service status
+		status := "passing"
+		criticalCount := 0
+		warningCount := 0
+		
+		for _, instance := range instances {
+			for _, check := range instance.Checks {
+				if check.ServiceID == instance.Service.ID {
+					switch check.Status {
+					case "critical":
+						criticalCount++
+					case "warning":
+						warningCount++
+					}
 				}
 			}
+		}
+		
+		if criticalCount > 0 {
+			status = "critical"
+		} else if warningCount > 0 {
+			status = "warning"
+		}
+		
+		statusIcon := formatHealthStatus(status)
+		blue("📦 Service: %s %s\n", serviceName, statusIcon)
+		
+		if showAll {
+			cyan("   (Showing all instances including unhealthy)\n")
+		} else {
+			cyan("   (Showing only healthy instances - use --all to see all)\n")
+		}
+		
+		if len(instances) > 0 {
+			yellow("   📍 Instances: %d\n", len(instances))
+			
+			for i, instance := range instances {
+				// Get health status for this instance
+				healthStatus := "✅ healthy"
+				
+				// Always check health status for display purposes
+				// Use the service health endpoint to get accurate health status
+				serviceHealth, _, err := client.Health().Service(instance.Service.Service, "", false, nil)
+				if err == nil {
+					hasCritical := false
+					hasWarning := false
+					for _, healthEntry := range serviceHealth {
+						if healthEntry.Service.ID == instance.Service.ID {
+							for _, check := range healthEntry.Checks {
+								if check.ServiceID == instance.Service.ID {
+									switch check.Status {
+									case "critical":
+										hasCritical = true
+									case "warning":
+										hasWarning = true
+									}
+								}
+							}
+						}
+					}
+					if hasCritical {
+						healthStatus = "❌ critical"
+					} else if hasWarning {
+						healthStatus = "⚠️  warning"
+					} else {
+						healthStatus = "✅ healthy"
+					}
+				} else {
+					healthStatus = "❓ unknown"
+				}
+				
+
+				
+				// Get admin port from metadata
+				adminPort := instance.Service.Port // fallback to main port
+				if adminPortStr, exists := instance.Service.Meta["admin-port"]; exists {
+					if port, err := strconv.Atoi(adminPortStr); err == nil {
+						adminPort = port
+					}
+				}
+				
+				yellow("      %d. %s (%s:%d) %s\n", i+1, instance.Service.ID, instance.Service.Address, instance.Service.Port, healthStatus)
+				cyan("         🔌 Admin: %s:%d\n", instance.Service.Address, adminPort)
+				
+				// Show metadata
+				if len(instance.Service.Meta) > 0 {
+					cyan("         🔧 Metadata:\n")
+					for key, value := range instance.Service.Meta {
+						cyan("            %s: %s\n", key, value)
+					}
+				}
+				
+				// Show tags
+				if len(instance.Service.Tags) > 0 {
+					cyan("         🏷️  Tags: %v\n", instance.Service.Tags)
+				}
+				
+				// Show health checks for this instance
+				cyan("         🔍 Health Checks:\n")
+				for _, check := range instance.Checks {
+					if check.ServiceID == instance.Service.ID {
+						checkIcon := formatCheckStatus(check.Status)
+						cyan("            %s %s: %s\n", checkIcon, check.Name, check.Status)
+						if check.Output != "" {
+							// Truncate long output
+							output := check.Output
+							if len(output) > 100 {
+								output = output[:97] + "..."
+							}
+							magenta("               Output: %s\n", output)
+						}
+					}
+				}
+			}
+		} else {
+			red("   ❌ No instances found\n")
 		}
 		fmt.Println()
 	}

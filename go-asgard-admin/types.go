@@ -4,34 +4,27 @@ import (
 	consulapi "github.com/hashicorp/consul/api"
 )
 
-// ServiceInfo holds enhanced service information
-type ServiceInfo struct {
-	Name      string
-	Instances []*consulapi.CatalogService
-	Online    int
-	Total     int
+// ServiceHealth represents the health status of a service
+type ServiceHealth struct {
+	ServiceName string
+	Instances   []*consulapi.ServiceEntry
+	Status      string // "passing", "warning", "critical"
 }
 
-// InstanceInfo holds enhanced instance information
+// InstanceInfo represents service instance information
 type InstanceInfo struct {
 	*consulapi.CatalogService
 	AdminPort int
 	GRPCPort  int
-	Tags      []string
 }
 
-// AdminConfig holds configuration for admin operations
-type AdminConfig struct {
-	ConsulAddr    string
-	TargetService string
-	TargetInstance string
-	AutoSelect    bool
-	OnlineOnly    bool
-}
-
-// ServiceDiscovery provides methods for discovering and managing services
-type ServiceDiscovery interface {
-	GetServices() (map[string][]string, error)
-	GetServiceInstances(serviceName string) ([]*InstanceInfo, error)
-	GetInstanceInfo(instance *consulapi.CatalogService) *InstanceInfo
+// FixConfig represents FIX configuration for a service
+type FixConfig struct {
+	SocketHost        string `json:"socket_host"`
+	SocketPort        int    `json:"socket_port"`
+	ClientID          string `json:"client_id"`
+	TargetCompID      string `json:"target_comp_id"`
+	SenderCompID      string `json:"sender_comp_id"`
+	HeartbeatInterval int    `json:"heartbeat_interval"`
+	FixVersion        string `json:"fix_version"`
 } 
