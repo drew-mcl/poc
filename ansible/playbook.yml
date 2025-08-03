@@ -1,0 +1,235 @@
+---
+- name: Deploy Order Sender/Receiver Services
+  hosts: all
+  become: yes
+  vars:
+    consul_host: "{{ ansible_default_ipv4.address }}"
+    consul_port: 8500
+    
+    # Order Sender Configuration
+    sender_service_name: "order-sender"
+    sender_ordinal: 1
+    sender_id: "{{ sender_service_name }}-{{ sender_ordinal }}"
+    sender_consul_host: "{{ consul_host }}"
+    sender_consul_port: "{{ consul_port }}"
+    sender_receiver_service_name: "order-receiver"
+    sender_mock_order_enabled: true
+    sender_mock_order_initial_delay: 5
+    sender_mock_order_interval: 15
+    sender_tcp_timeout_ms: 5000
+    sender_tcp_retry_attempts: 3
+    
+    # Order Receiver Configuration
+    receiver_service_name: "order-receiver"
+    receiver_ordinal: 1
+    receiver_id: "{{ receiver_service_name }}-{{ receiver_ordinal }}"
+    receiver_consul_host: "{{ consul_host }}"
+    receiver_consul_port: "{{ consul_port }}"
+    receiver_tcp_port: 9000
+    
+    # Java Configuration
+    java_version: "11"
+    java_home: "/usr/lib/jvm/java-{{ java_version }}-openjdk"
+    
+    # Service Configuration
+    service_user: "orderuser"
+    service_group: "orderuser"
+    service_home: "/opt/order-services"
+    logs_dir: "{{ service_home }}/logs"
+    
+    # Consul Configuration
+    consul_version: "1.16.2"
+    consul_arch: "amd64"
+    consul_os: "linux"
+    consul_download_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_{{ consul_os }}_{{ consul_arch }}.zip"
+    consul_bin_dir: "/usr/local/bin"
+    consul_config_dir: "/etc/consul.d"
+    consul_data_dir: "/opt/consul"
+    
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+      
+    - name: Install required packages (Debian/Ubuntu)
+      apt:
+        name:
+          - openjdk-{{ java_version }}-jdk
+          - curl
+          - wget
+          - unzip
+          - netcat
+        state: present
+      when: ansible_os_family == "Debian"
+      
+    - name: Install required packages (CentOS/RHEL)
+      yum:
+        name:
+          - java-{{ java_version }}-openjdk-devel
+          - curl
+          - wget
+          - unzip
+          - nc
+        state: present
+      when: ansible_os_family == "RedHat"
+      
+    - name: Create service user and group
+      user:
+        name: "{{ service_user }}"
+        group: "{{ service_group }}"
+        system: yes
+        shell: /bin/false
+        home: "{{ service_home }}"
+        createhome: no
+        
+    - name: Create service directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ service_user }}"
+        group: "{{ service_group }}"
+        mode: '0755'
+      loop:
+        - "{{ service_home }}"
+        - "{{ service_home }}/order-sender"
+        - "{{ service_home }}/order-receiver"
+        - "{{ logs_dir }}"
+        - "{{ consul_data_dir }}"
+        - "{{ consul_config_dir }}"
+        
+    - name: Copy Order Sender files
+      copy:
+        src: "{{ playbook_dir }}/../order-sender/"
+        dest: "{{ service_home }}/order-sender/"
+        owner: "{{ service_user }}"
+        group: "{{ service_group }}"
+        mode: '0644'
+        
+    - name: Copy Order Receiver files
+      copy:
+        src: "{{ playbook_dir }}/../order-receiver/"
+        dest: "{{ service_home }}/order-receiver/"
+        owner: "{{ service_user }}"
+        group: "{{ service_group }}"
+        mode: '0644'
+        
+    - name: Copy distribution scripts
+      copy:
+        src: "{{ playbook_dir }}/../src/dist/"
+        dest: "{{ service_home }}/"
+        owner: "{{ service_user }}"
+        group: "{{ service_group }}"
+        mode: '0755'
+        
+    - name: Build Order Sender
+      command: ./gradlew :order-sender:build
+      args:
+        chdir: "{{ service_home }}"
+        creates: "{{ service_home }}/order-sender/build/libs/order-sender-1.0.0.jar"
+      become_user: "{{ service_user }}"
+      
+    - name: Build Order Receiver
+      command: ./gradlew :order-receiver:build
+      args:
+        chdir: "{{ service_home }}"
+        creates: "{{ service_home }}/order-receiver/build/libs/order-receiver-1.0.0.jar"
+      become_user: "{{ service_user }}"
+      
+    # Download and install Consul
+    - name: Download Consul
+      get_url:
+        url: "{{ consul_download_url }}"
+        dest: "/tmp/consul.zip"
+        mode: '0644'
+        
+    - name: Extract Consul
+      unarchive:
+        src: "/tmp/consul.zip"
+        dest: "/tmp"
+        remote_src: yes
+        
+    - name: Install Consul binary
+      copy:
+        src: "/tmp/consul"
+        dest: "{{ consul_bin_dir }}/consul"
+        mode: '0755'
+        remote_src: yes
+        
+    - name: Create Consul configuration
+      template:
+        src: consul-config.json.j2
+        dest: "{{ consul_config_dir }}/consul.json"
+        owner: "{{ service_user }}"
+        group: "{{ service_group }}"
+        mode: '0644'
+        
+    - name: Start Consul agent
+      command: "{{ service_home }}/start-consul.sh"
+      args:
+        chdir: "{{ service_home }}"
+      become_user: "{{ service_user }}"
+      async: 300
+      poll: 0
+      
+    - name: Wait for Consul to be ready
+      uri:
+        url: "http://{{ consul_host }}:{{ consul_port }}/v1/status/leader"
+        method: GET
+        status_code: 200
+      register: consul_ready
+      until: consul_ready.status == 200
+      retries: 30
+      delay: 2
+      
+    - name: Start Order Receiver
+      command: "{{ service_home }}/start-receiver.sh"
+      args:
+        chdir: "{{ service_home }}"
+      become_user: "{{ service_user }}"
+      async: 300
+      poll: 0
+      
+    - name: Wait for receiver to be ready
+      wait_for:
+        port: "{{ receiver_tcp_port }}"
+        host: "{{ ansible_default_ipv4.address }}"
+        timeout: 30
+        
+    - name: Start Order Sender
+      command: "{{ service_home }}/start-sender.sh"
+      args:
+        chdir: "{{ service_home }}"
+      become_user: "{{ service_user }}"
+      async: 300
+      poll: 0
+      
+    - name: Wait for services to be ready
+      wait_for:
+        port: "{{ item }}"
+        host: "{{ ansible_default_ipv4.address }}"
+        timeout: 30
+      loop:
+        - "{{ consul_port }}"
+        - "{{ receiver_tcp_port }}"
+        
+    - name: Check Consul registration
+      uri:
+        url: "http://{{ consul_host }}:{{ consul_port }}/v1/catalog/services"
+        method: GET
+      register: consul_services
+      
+    - name: Display Consul services
+      debug:
+        msg: "Registered services: {{ consul_services.json }}"
+        
+    - name: Test TCP communication
+      shell: |
+        echo "ORDER|TEST-001|AAPL|BUY|100|150.50|TRADER001|NASDAQ|$(date +%Y%m%d-%H:%M:%S.000)" | nc localhost {{ receiver_tcp_port }}
+      register: tcp_test
+      ignore_errors: yes
+      
+    - name: Display TCP test result
+      debug:
+        msg: "TCP test result: {{ tcp_test.stdout }}" 

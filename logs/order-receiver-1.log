@@ -1,0 +1,357 @@
+Reusing configuration cache.
+> Task :order-receiver:extractProto UP-TO-DATE
+> Task :order-receiver:extractIncludeProto UP-TO-DATE
+> Task :order-receiver:processResources UP-TO-DATE
+> Task :order-receiver:generateProto UP-TO-DATE
+> Task :order-receiver:compileJava UP-TO-DATE
+> Task :order-receiver:classes UP-TO-DATE
+
+> Task :order-receiver:run
+19:48:03.034 [main] INFO  c.e.orderreceiver.ReceiverConfig - Using environment value for SERVICE_NAME: order-receiver
+19:48:03.036 [main] INFO  c.e.orderreceiver.ReceiverConfig - Using environment value for ORDINAL: 1
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Using environment value for TCP_PORT: 9001
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Using default value for ADMIN_PORT: 9100
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Using environment value for CONSUL_HOST: localhost
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Using environment value for CONSUL_PORT: 8500
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Using default value for SERVICE_TAGS: java,order-receiver,tcp,admin
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - === Order Receiver Configuration ===
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Service Name: order-receiver
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Ordinal: 1
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Service ID: order-receiver-1
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - TCP Port: 9001
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Admin Port: 9100
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Consul Address: localhost:8500
+19:48:03.037 [main] INFO  c.e.orderreceiver.ReceiverConfig - Service Tags: java, order-receiver, tcp, admin
+19:48:03.038 [main] INFO  c.e.orderreceiver.ReceiverConfig - ===================================
+19:48:03.231 [main] INFO  c.e.o.OrderReceiverApplication - Starting Order Receiver (ID: order-receiver-1)...
+19:48:03.232 [main] INFO  c.e.orderreceiver.tcp.OrderTcpServer - TCP server STARTED on port 9001
+19:48:03.233 [main] INFO  c.e.o.OrderReceiverApplication - TCP server started on port 9001
+19:48:03.317 [main] INFO  c.e.orderreceiver.admin.AdminServer - Admin server started on port 9100
+19:48:03.318 [main] INFO  c.e.o.OrderReceiverApplication - Admin server started on port 9100
+19:48:03.318 [main] INFO  c.e.o.consul.ConsulRegistration - Registering service with Consul: order-receiver (ID: order-receiver-1)
+19:48:03.367 [main] INFO  c.e.o.consul.ConsulRegistration - Successfully registered service with Consul. Main port: 9001, Additional ports: {admin=9100}
+19:48:03.367 [main] INFO  c.e.o.OrderReceiverApplication - Registered with Consul
+19:48:03.368 [main] INFO  c.e.o.OrderReceiverApplication - Order Receiver started successfully
+19:48:03.368 [main] INFO  c.e.o.OrderReceiverApplication - Order Receiver is running. Press Ctrl+C to stop.
+19:48:04.827 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:48:04.827 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:48:11.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:11.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TSLA 941 shares @ ${:.2f}
+19:48:11.267 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000001
+19:48:11.273 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000001: FILLED
+19:48:11.273 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000001 - FILLED
+19:48:14.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:14.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY TSLA 644 shares @ ${:.2f}
+19:48:14.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000003
+19:48:14.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000003: FILLED
+19:48:14.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000003 - FILLED
+19:48:14.828 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:48:14.829 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:48:17.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:17.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY ADBE 341 shares @ ${:.2f}
+19:48:17.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000005
+19:48:17.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000005: FILLED
+19:48:17.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000005 - FILLED
+19:48:20.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:20.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY AVGO 562 shares @ ${:.2f}
+19:48:20.255 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000007
+19:48:20.255 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000007: FILLED
+19:48:20.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000007 - FILLED
+19:48:23.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:23.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY META 611 shares @ ${:.2f}
+19:48:23.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000009
+19:48:23.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000009: FILLED
+19:48:23.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000009 - FILLED
+19:48:24.830 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:48:24.830 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:48:26.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:26.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL AVGO 1092 shares @ ${:.2f}
+19:48:26.259 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000011
+19:48:26.259 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000011: FILLED
+19:48:26.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000011 - FILLED
+19:48:28.145 [grpc-default-executor-0] INFO  c.e.orderreceiver.tcp.OrderTcpServer - TCP server mode changed to: REJECT ALL
+19:48:28.146 [grpc-default-executor-0] INFO  c.e.o.OrderReceiverApplication - >>> Order processing mode set to: REJECT ALL <<<
+19:48:28.146 [grpc-default-executor-0] WARN  c.example.orderreceiver.OrderManager - >>> Order processing is now set to REJECT ALL NEW ORDERS <<<
+19:48:29.254 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:29.254 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TSLA 339 shares @ ${:.2f}
+19:48:29.254 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000013
+19:48:29.255 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000013: REJECTED
+19:48:29.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000013 - REJECTED
+19:48:32.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:32.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY ADBE 590 shares @ ${:.2f}
+19:48:32.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000015
+19:48:32.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000015: REJECTED
+19:48:32.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000015 - REJECTED
+19:48:34.831 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:48:34.831 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:48:35.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:35.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TSLA 445 shares @ ${:.2f}
+19:48:35.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000017
+19:48:35.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000017: REJECTED
+19:48:35.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000017 - REJECTED
+19:48:38.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:38.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL NVDA 751 shares @ ${:.2f}
+19:48:38.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000019
+19:48:38.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000019: REJECTED
+19:48:38.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000019 - REJECTED
+19:48:41.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:41.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TSLA 149 shares @ ${:.2f}
+19:48:41.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000021
+19:48:41.261 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000021: REJECTED
+19:48:41.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000021 - REJECTED
+19:48:44.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:44.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL AMZN 150 shares @ ${:.2f}
+19:48:44.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000023
+19:48:44.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000023: REJECTED
+19:48:44.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000023 - REJECTED
+19:48:44.833 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:48:44.834 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:48:47.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:47.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY INTC 762 shares @ ${:.2f}
+19:48:47.261 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000025
+19:48:47.261 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000025: REJECTED
+19:48:47.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000025 - REJECTED
+19:48:50.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:50.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY KLAC 549 shares @ ${:.2f}
+19:48:50.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000027
+19:48:50.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000027: REJECTED
+19:48:50.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000027 - REJECTED
+19:48:53.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:53.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY AMD 299 shares @ ${:.2f}
+19:48:53.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000029
+19:48:53.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000029: REJECTED
+19:48:53.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000029 - REJECTED
+19:48:54.836 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:48:54.837 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:48:56.263 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:56.263 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY AAPL 618 shares @ ${:.2f}
+19:48:56.264 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000031
+19:48:56.264 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000031: REJECTED
+19:48:56.264 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000031 - REJECTED
+19:48:59.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:48:59.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL AMZN 653 shares @ ${:.2f}
+19:48:59.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000033
+19:48:59.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000033: REJECTED
+19:48:59.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000033 - REJECTED
+19:49:02.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:02.263 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY ADBE 622 shares @ ${:.2f}
+19:49:02.263 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000035
+19:49:02.263 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000035: REJECTED
+19:49:02.263 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000035 - REJECTED
+19:49:04.839 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:49:04.840 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:49:05.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:05.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY KLAC 689 shares @ ${:.2f}
+19:49:05.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000037
+19:49:05.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000037: REJECTED
+19:49:05.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000037 - REJECTED
+19:49:08.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:08.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY AMD 269 shares @ ${:.2f}
+19:49:08.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000039
+19:49:08.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000039: REJECTED
+19:49:08.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000039 - REJECTED
+19:49:11.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:11.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL KLAC 914 shares @ ${:.2f}
+19:49:11.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000041
+19:49:11.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000041: REJECTED
+19:49:11.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000041 - REJECTED
+19:49:14.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:14.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL QCOM 780 shares @ ${:.2f}
+19:49:14.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000043
+19:49:14.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000043: REJECTED
+19:49:14.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000043 - REJECTED
+19:49:14.840 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:49:14.840 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:49:17.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:17.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL ADI 371 shares @ ${:.2f}
+19:49:17.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000045
+19:49:17.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000045: REJECTED
+19:49:17.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000045 - REJECTED
+19:49:20.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:20.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL ADBE 833 shares @ ${:.2f}
+19:49:20.253 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000047
+19:49:20.253 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000047: REJECTED
+19:49:20.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000047 - REJECTED
+19:49:23.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:23.254 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY QCOM 814 shares @ ${:.2f}
+19:49:23.254 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000049
+19:49:23.254 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000049: REJECTED
+19:49:23.254 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000049 - REJECTED
+19:49:24.842 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:49:24.842 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:49:26.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:26.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TSLA 516 shares @ ${:.2f}
+19:49:26.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000051
+19:49:26.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000051: REJECTED
+19:49:26.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000051 - REJECTED
+19:49:29.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:29.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY NFLX 128 shares @ ${:.2f}
+19:49:29.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000053
+19:49:29.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000053: REJECTED
+19:49:29.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000053 - REJECTED
+19:49:32.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:32.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TSLA 387 shares @ ${:.2f}
+19:49:32.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000055
+19:49:32.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000055: REJECTED
+19:49:32.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000055 - REJECTED
+19:49:34.844 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:49:34.845 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:49:35.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:35.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY GOOGL 585 shares @ ${:.2f}
+19:49:35.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000057
+19:49:35.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000057: REJECTED
+19:49:35.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000057 - REJECTED
+19:49:38.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:38.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL ORCL 364 shares @ ${:.2f}
+19:49:38.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000059
+19:49:38.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000059: REJECTED
+19:49:38.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000059 - REJECTED
+19:49:41.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:41.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TXN 281 shares @ ${:.2f}
+19:49:41.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000061
+19:49:41.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000061: REJECTED
+19:49:41.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000061 - REJECTED
+19:49:44.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:44.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY AMZN 468 shares @ ${:.2f}
+19:49:44.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000063
+19:49:44.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000063: REJECTED
+19:49:44.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000063 - REJECTED
+19:49:44.845 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:49:44.845 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:49:47.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:47.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL MSFT 1014 shares @ ${:.2f}
+19:49:47.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000065
+19:49:47.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000065: REJECTED
+19:49:47.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000065 - REJECTED
+19:49:50.252 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:50.252 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL GOOGL 669 shares @ ${:.2f}
+19:49:50.252 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000067
+19:49:50.252 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000067: REJECTED
+19:49:50.252 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000067 - REJECTED
+19:49:50.399 [grpc-default-executor-0] INFO  c.e.orderreceiver.tcp.OrderTcpServer - TCP server mode changed to: REJECT ALL
+19:49:50.399 [grpc-default-executor-0] INFO  c.e.o.OrderReceiverApplication - >>> Order processing mode set to: REJECT ALL <<<
+19:49:50.399 [grpc-default-executor-0] WARN  c.example.orderreceiver.OrderManager - >>> Order processing is now set to REJECT ALL NEW ORDERS <<<
+19:49:53.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:53.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL NFLX 233 shares @ ${:.2f}
+19:49:53.253 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000069
+19:49:53.253 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000069: REJECTED
+19:49:53.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000069 - REJECTED
+19:49:54.847 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:49:54.848 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:49:56.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:56.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL TXN 892 shares @ ${:.2f}
+19:49:56.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000071
+19:49:56.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000071: REJECTED
+19:49:56.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000071 - REJECTED
+19:49:59.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:49:59.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY CRM 520 shares @ ${:.2f}
+19:49:59.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000073
+19:49:59.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000073: REJECTED
+19:49:59.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000073 - REJECTED
+19:50:02.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:02.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY MU 896 shares @ ${:.2f}
+19:50:02.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000075
+19:50:02.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000075: REJECTED
+19:50:02.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000075 - REJECTED
+19:50:04.849 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:50:04.849 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:50:05.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:05.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL QCOM 438 shares @ ${:.2f}
+19:50:05.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000077
+19:50:05.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000077: REJECTED
+19:50:05.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000077 - REJECTED
+19:50:08.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:08.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY AMD 816 shares @ ${:.2f}
+19:50:08.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000079
+19:50:08.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000079: REJECTED
+19:50:08.263 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000079 - REJECTED
+19:50:11.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:11.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY NFLX 397 shares @ ${:.2f}
+19:50:11.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000081
+19:50:11.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000081: REJECTED
+19:50:11.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000081 - REJECTED
+19:50:14.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:14.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL QCOM 804 shares @ ${:.2f}
+19:50:14.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000083
+19:50:14.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000083: REJECTED
+19:50:14.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000083 - REJECTED
+19:50:14.851 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:50:14.851 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:50:17.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:17.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY ADBE 389 shares @ ${:.2f}
+19:50:17.253 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000085
+19:50:17.253 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000085: REJECTED
+19:50:17.253 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000085 - REJECTED
+19:50:20.254 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:20.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL MSFT 820 shares @ ${:.2f}
+19:50:20.255 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000087
+19:50:20.255 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000087: REJECTED
+19:50:20.255 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000087 - REJECTED
+19:50:23.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:23.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL CRM 173 shares @ ${:.2f}
+19:50:23.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000089
+19:50:23.259 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000089: REJECTED
+19:50:23.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000089 - REJECTED
+19:50:24.855 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:50:24.856 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:50:26.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:26.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL CRM 549 shares @ ${:.2f}
+19:50:26.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000091
+19:50:26.260 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000091: REJECTED
+19:50:26.260 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000091 - REJECTED
+19:50:29.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:29.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY GOOGL 136 shares @ ${:.2f}
+19:50:29.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000093
+19:50:29.258 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000093: REJECTED
+19:50:29.258 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000093 - REJECTED
+19:50:32.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:32.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY TSLA 144 shares @ ${:.2f}
+19:50:32.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000095
+19:50:32.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000095: REJECTED
+19:50:32.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000095 - REJECTED
+19:50:34.855 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:50:34.857 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:50:35.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:35.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY GOOGL 1075 shares @ ${:.2f}
+19:50:35.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000097
+19:50:35.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000097: REJECTED
+19:50:35.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000097 - REJECTED
+19:50:38.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:38.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY ORCL 453 shares @ ${:.2f}
+19:50:38.259 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000099
+19:50:38.259 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000099: REJECTED
+19:50:38.259 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000099 - REJECTED
+19:50:41.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:41.262 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY NVDA 1034 shares @ ${:.2f}
+19:50:41.262 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000101
+19:50:41.263 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000101: REJECTED
+19:50:41.263 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000101 - REJECTED
+19:50:44.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:44.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL ADBE 789 shares @ ${:.2f}
+19:50:44.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000103
+19:50:44.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000103: REJECTED
+19:50:44.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000103 - REJECTED
+19:50:44.857 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:50:44.857 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:50:47.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:47.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY AMZN 137 shares @ ${:.2f}
+19:50:47.261 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000105
+19:50:47.261 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000105: REJECTED
+19:50:47.261 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000105 - REJECTED
+19:50:50.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:50.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: SELL META 909 shares @ ${:.2f}
+19:50:50.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000107
+19:50:50.256 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000107: REJECTED
+19:50:50.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000107 - REJECTED
+19:50:53.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:53.256 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY ORCL 623 shares @ ${:.2f}
+19:50:53.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000109
+19:50:53.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000109: REJECTED
+19:50:53.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000109 - REJECTED
+19:50:54.860 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /0:0:0:0:0:0:0:1
+19:50:54.861 [pool-1-thread-1] WARN  c.e.orderreceiver.tcp.OrderTcpServer - No order message received from client
+19:50:56.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Order client connected: /127.0.0.1
+19:50:56.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Received order: BUY MSFT 671 shares @ ${:.2f}
+19:50:56.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added order: SENDER-000111
+19:50:56.257 [pool-1-thread-1] INFO  c.example.orderreceiver.OrderManager - Added response for order SENDER-000111: REJECTED
+19:50:56.257 [pool-1-thread-1] INFO  c.e.orderreceiver.tcp.OrderTcpServer - Sent response: SENDER-000111 - REJECTED

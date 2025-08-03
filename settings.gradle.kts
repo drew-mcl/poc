@@ -8,4 +8,5 @@
 
 rootProject.name = "consul-demo"
 
-include("java-order-service")
+include("order-sender")
+include("order-receiver")

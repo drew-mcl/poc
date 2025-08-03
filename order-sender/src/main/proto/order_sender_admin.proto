@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package com.example.ordersender.grpc;
+
+option java_multiple_files = true;
+
+// Order Sender Admin Service
+service OrderSenderAdminService {
+  rpc GetServiceInfo(ServiceInfoRequest) returns (ServiceInfoResponse);
+  rpc ExcludeReceiver(ExcludeReceiverRequest) returns (AdminActionResponse);
+  rpc IncludeReceiver(IncludeReceiverRequest) returns (AdminActionResponse);
+  rpc ListExcludedReceivers(ListExcludedReceiversRequest) returns (ListExcludedReceiversResponse);
+  rpc GetOrderResponse(GetOrderResponseRequest) returns (GetOrderResponseResponse);
+  rpc ListAllOrderResponses(ListAllOrderResponsesRequest) returns (ListAllOrderResponsesResponse);
+  rpc ListFilledOrderResponses(ListFilledOrderResponsesRequest) returns (ListFilledOrderResponsesResponse);
+  rpc ListRejectedOrderResponses(ListRejectedOrderResponsesRequest) returns (ListRejectedOrderResponsesResponse);
+}
+
+// Request/Response messages
+message ServiceInfoRequest {}
+
+message ServiceInfoResponse {
+  string service_name = 1;
+  string version = 2;
+  string status = 3;
+  int32 response_count = 4;
+  int32 excluded_receiver_count = 5;
+  repeated string available_methods = 6;
+}
+
+message ExcludeReceiverRequest {
+  string receiver_id = 1;
+}
+
+message IncludeReceiverRequest {
+  string receiver_id = 1;
+}
+
+message AdminActionResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ListExcludedReceiversRequest {}
+
+message ListExcludedReceiversResponse {
+  repeated string receiver_ids = 1;
+}
+
+message GetOrderResponseRequest {
+  string order_id = 1;
+}
+
+message GetOrderResponseResponse {
+  bool success = 1;
+  OrderResponse order_response = 2;
+  string message = 3;
+}
+
+message ListAllOrderResponsesRequest {}
+
+message ListAllOrderResponsesResponse {
+  repeated string order_ids = 1;
+}
+
+message ListFilledOrderResponsesRequest {}
+
+message ListFilledOrderResponsesResponse {
+  repeated string order_ids = 1;
+}
+
+message ListRejectedOrderResponsesRequest {}
+
+message ListRejectedOrderResponsesResponse {
+  repeated string order_ids = 1;
+}
+
+// Order Response message
+message OrderResponse {
+  string order_id = 1;
+  string status = 2;
+  string message = 3;
+  string receiver_id = 4;  // Which receiver processed this order
+} 

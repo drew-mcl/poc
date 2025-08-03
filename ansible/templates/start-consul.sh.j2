@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Start Consul agent
+echo "Starting Consul agent..."
+
+# Kill any existing Consul processes
+pkill -f consul || true
+
+# Start Consul agent
+nohup consul agent -config-dir={{ consul_config_dir }} > {{ logs_dir }}/consul.log 2>&1 &
+
+# Wait for Consul to start
+sleep 5
+
+echo "Consul agent started. Logs: {{ logs_dir }}/consul.log"
+echo "Consul UI: http://localhost:{{ consul_port }}" 

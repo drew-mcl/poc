@@ -18,31 +18,35 @@ public class ConsulRegistration {
     private final AgentClient agentClient;
     private final String serviceName;
     private final String serviceId;
-    private final int tcpPort;
-    private final int grpcPort;
+    private final int fixPort;
+    private final int adminPort;
     
-    public ConsulRegistration(String serviceName, String serviceId, int tcpPort, int grpcPort) {
+    public ConsulRegistration(String serviceName, String serviceId, int fixPort, int adminPort) {
         this.consul = Consul.builder().build();
         this.agentClient = consul.agentClient();
         this.serviceName = serviceName;
         this.serviceId = serviceId;
-        this.tcpPort = tcpPort;
-        this.grpcPort = grpcPort;
+        this.fixPort = fixPort;
+        this.adminPort = adminPort;
     }
+    
+
     
     public void register() {
         try {
+
+            Registration.RegCheck fixCheck = Registration.RegCheck.tcp("localhost:" + fixPort, 10L);  
+            Registration.RegCheck adminCheck = Registration.RegCheck.grpc("localhost:" + adminPort + "/grpc.health.v1.Health/Check", 10L);
+
             // Create service registration with FIX configuration metadata
             Registration registration = ImmutableRegistration.builder()
                     .id(serviceId)
                     .name(serviceName)
-                    .port(tcpPort)
+                    .port(fixPort)
                     .address("localhost")
                     .addTags(ServiceConfig.SERVICE_TAGS)
-                    .putMeta("grpc-port", String.valueOf(grpcPort))
+                    .putMeta("admin-port", String.valueOf(adminPort))
                     .putMeta("version", "2.0.0")
-                    .putMeta("fix-socket-host", ServiceConfig.FIX_SOCKET_HOST)
-                    .putMeta("fix-socket-port", String.valueOf(ServiceConfig.FIX_SOCKET_PORT))
                     .putMeta("fix-client-id", ServiceConfig.FIX_CLIENT_ID)
                     .putMeta("fix-target-comp-id", ServiceConfig.FIX_TARGET_COMP_ID)
                     .putMeta("fix-sender-comp-id", ServiceConfig.FIX_SENDER_COMP_ID)
@@ -50,6 +54,7 @@ public class ConsulRegistration {
                     .putMeta("fix-version", ServiceConfig.FIX_VERSION)
                     .putMeta("service-type", "fix-order-service")
                     .putMeta("ordinal", String.valueOf(ServiceConfig.ORDINAL))
+                    .checks(Arrays.asList(fixCheck, adminCheck))
                     .build();
             
             agentClient.register(registration);

@@ -1,0 +1,30 @@
+[Unit]
+Description=Order Receiver Service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User={{ service_user }}
+Group={{ service_group }}
+WorkingDirectory={{ service_home }}/order-receiver
+ExecStart={{ service_home }}/order-receiver/gradlew run
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables
+Environment=SERVICE_NAME={{ receiver_service_name }}
+Environment=ORDINAL={{ receiver_ordinal }}
+Environment=SERVICE_ID={{ receiver_id }}
+Environment=TCP_PORT={{ receiver_tcp_port }}
+Environment=CONSUL_HOST={{ receiver_consul_host }}
+Environment=CONSUL_PORT={{ receiver_consul_port }}
+
+# Java options
+Environment=JAVA_HOME={{ java_home }}
+Environment=JAVA_OPTS=-Xmx512m -Xms256m
+
+[Install]
+WantedBy=multi-user.target 

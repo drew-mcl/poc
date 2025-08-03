@@ -1,0 +1,833 @@
+Starting a Gradle Daemon, 2 busy and 1 incompatible and 14 stopped Daemons could not be reused, use --status for details
+Calculating task graph as configuration cache cannot be reused because file 'order-receiver/build.gradle.kts' has changed.
+> Task :order-sender:extractProto UP-TO-DATE
+> Task :order-sender:extractIncludeProto UP-TO-DATE
+> Task :order-sender:processResources UP-TO-DATE
+> Task :order-sender:generateProto UP-TO-DATE
+> Task :order-sender:compileJava
+> Task :order-sender:classes
+
+> Task :order-sender:run
+19:48:05.939 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for SENDER_ID: order-sender-1
+19:48:05.942 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for SERVICE_NAME: order-sender
+19:48:05.942 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for SERVICE_ADDRESS: localhost
+19:48:05.942 [main] INFO  c.example.ordersender.SenderConfig - Using default value for ADMIN_PORT: 9200
+19:48:05.942 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for CONSUL_HOST: localhost
+19:48:05.942 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for CONSUL_PORT: 8500
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for RECEIVER_SERVICE_NAME: order-receiver
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for MOCK_ORDER_INITIAL_DELAY: 2
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for MOCK_ORDER_INTERVAL: 3
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for MOCK_ORDER_ENABLED: true
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for TCP_TIMEOUT_MS: 5000
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Using environment value for TCP_RETRY_ATTEMPTS: 3
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - === Order Sender Configuration ===
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Sender ID: order-sender-1
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Service Name: order-sender
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Service Address: localhost
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Admin Port: 9200
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Consul Address: localhost:8500
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Receiver Service Name: order-receiver
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Mock Order Enabled: true
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Mock Order Initial Delay: 2
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - Mock Order Interval: 3
+19:48:05.943 [main] INFO  c.example.ordersender.SenderConfig - TCP Timeout: 5000ms
+19:48:05.944 [main] INFO  c.example.ordersender.SenderConfig - TCP Retry Attempts: 3
+19:48:05.944 [main] INFO  c.example.ordersender.SenderConfig - ================================
+19:48:06.119 [main] INFO  c.e.o.OrderSenderApplication - Starting Order Sender (ID: order-sender-1)...
+19:48:06.119 [main] INFO  c.e.o.consul.ConsulRegistration - Registering sender service with Consul: order-sender (ID: order-sender-1)
+19:48:06.162 [main] INFO  c.e.o.consul.ConsulRegistration - Successfully registered sender service with Consul. Admin port: 9200
+19:48:06.163 [main] INFO  c.e.o.OrderSenderApplication - Registered with Consul
+19:48:06.247 [main] INFO  c.e.ordersender.admin.AdminServer - Admin server started on port 9200
+19:48:06.247 [main] INFO  c.e.o.OrderSenderApplication - Admin server started on port 9200
+19:48:06.248 [main] INFO  c.e.o.OrderSenderApplication - Order Sender started successfully
+19:48:06.248 [main] INFO  c.e.o.OrderSenderApplication - Order Sender is running. Press Ctrl+C to stop.
+19:48:08.291 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 0 healthy receiver instances
+19:48:08.291 [pool-2-thread-1] WARN  c.e.o.OrderSenderApplication - No receivers found in Consul - skipping order send
+19:48:11.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:11.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:11.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TSLA 941 shares @ ${:.2f}
+19:48:11.278 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000001: FILLED
+19:48:11.278 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000001', status='FILLED', message='Order filled successfully'}
+19:48:11.279 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000001', status='FILLED', message='Order filled successfully'}
+19:48:11.279 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL TSLA 790 shares @ ${:.2f}
+19:48:11.284 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000002: FILLED
+19:48:11.284 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000002', status='FILLED', message='Order filled successfully'}
+19:48:11.284 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000002', status='FILLED', message='Order filled successfully'}
+19:48:14.259 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:14.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:14.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY TSLA 644 shares @ ${:.2f}
+19:48:14.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000003: FILLED
+19:48:14.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000003', status='FILLED', message='Order filled successfully'}
+19:48:14.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000003', status='FILLED', message='Order filled successfully'}
+19:48:14.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AVGO 356 shares @ ${:.2f}
+19:48:14.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000004: FILLED
+19:48:14.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000004', status='FILLED', message='Order filled successfully'}
+19:48:14.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000004', status='FILLED', message='Order filled successfully'}
+19:48:17.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:17.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:17.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY ADBE 341 shares @ ${:.2f}
+19:48:17.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000005: FILLED
+19:48:17.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000005', status='FILLED', message='Order filled successfully'}
+19:48:17.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000005', status='FILLED', message='Order filled successfully'}
+19:48:17.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY ORCL 824 shares @ ${:.2f}
+19:48:17.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000006: FILLED
+19:48:17.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000006', status='FILLED', message='Order filled successfully'}
+19:48:17.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000006', status='FILLED', message='Order filled successfully'}
+19:48:20.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:20.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:20.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY AVGO 562 shares @ ${:.2f}
+19:48:20.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000007: FILLED
+19:48:20.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000007', status='FILLED', message='Order filled successfully'}
+19:48:20.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000007', status='FILLED', message='Order filled successfully'}
+19:48:20.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AMZN 794 shares @ ${:.2f}
+19:48:20.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000008: FILLED
+19:48:20.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000008', status='FILLED', message='Order filled successfully'}
+19:48:20.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000008', status='FILLED', message='Order filled successfully'}
+19:48:23.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:23.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:23.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY META 611 shares @ ${:.2f}
+19:48:23.261 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000009: FILLED
+19:48:23.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000009', status='FILLED', message='Order filled successfully'}
+19:48:23.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000009', status='FILLED', message='Order filled successfully'}
+19:48:23.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY GOOGL 236 shares @ ${:.2f}
+19:48:23.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000010: FILLED
+19:48:23.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000010', status='FILLED', message='Order filled successfully'}
+19:48:23.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000010', status='FILLED', message='Order filled successfully'}
+19:48:26.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:26.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:26.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL AVGO 1092 shares @ ${:.2f}
+19:48:26.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000011: FILLED
+19:48:26.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000011', status='FILLED', message='Order filled successfully'}
+19:48:26.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000011', status='FILLED', message='Order filled successfully'}
+19:48:26.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL MSFT 664 shares @ ${:.2f}
+19:48:26.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000012: FILLED
+19:48:26.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000012', status='FILLED', message='Order filled successfully'}
+19:48:26.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000012', status='FILLED', message='Order filled successfully'}
+19:48:29.253 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:29.253 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:29.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TSLA 339 shares @ ${:.2f}
+19:48:29.255 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000013: REJECTED
+19:48:29.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000013', status='REJECTED', message='Order rejected by receiver'}
+19:48:29.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000013', status='REJECTED', message='Order rejected by receiver'}
+19:48:29.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY GOOGL 945 shares @ ${:.2f}
+19:48:29.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000014: FILLED
+19:48:29.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000014', status='FILLED', message='Order filled successfully'}
+19:48:29.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000014', status='FILLED', message='Order filled successfully'}
+19:48:32.260 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:32.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:32.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY ADBE 590 shares @ ${:.2f}
+19:48:32.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000015: REJECTED
+19:48:32.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000015', status='REJECTED', message='Order rejected by receiver'}
+19:48:32.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000015', status='REJECTED', message='Order rejected by receiver'}
+19:48:32.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL TXN 524 shares @ ${:.2f}
+19:48:32.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000016: FILLED
+19:48:32.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000016', status='FILLED', message='Order filled successfully'}
+19:48:32.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000016', status='FILLED', message='Order filled successfully'}
+19:48:35.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:35.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:35.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TSLA 445 shares @ ${:.2f}
+19:48:35.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000017: REJECTED
+19:48:35.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000017', status='REJECTED', message='Order rejected by receiver'}
+19:48:35.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000017', status='REJECTED', message='Order rejected by receiver'}
+19:48:35.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL INTC 755 shares @ ${:.2f}
+19:48:35.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000018: FILLED
+19:48:35.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000018', status='FILLED', message='Order filled successfully'}
+19:48:35.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000018', status='FILLED', message='Order filled successfully'}
+19:48:38.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:38.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:38.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL NVDA 751 shares @ ${:.2f}
+19:48:38.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000019: REJECTED
+19:48:38.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000019', status='REJECTED', message='Order rejected by receiver'}
+19:48:38.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000019', status='REJECTED', message='Order rejected by receiver'}
+19:48:38.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY ADI 1057 shares @ ${:.2f}
+19:48:38.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000020: FILLED
+19:48:38.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000020', status='FILLED', message='Order filled successfully'}
+19:48:38.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000020', status='FILLED', message='Order filled successfully'}
+19:48:41.258 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:41.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:41.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TSLA 149 shares @ ${:.2f}
+19:48:41.261 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000021: REJECTED
+19:48:41.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000021', status='REJECTED', message='Order rejected by receiver'}
+19:48:41.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000021', status='REJECTED', message='Order rejected by receiver'}
+19:48:41.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY META 154 shares @ ${:.2f}
+19:48:41.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000022: FILLED
+19:48:41.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000022', status='FILLED', message='Order filled successfully'}
+19:48:41.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000022', status='FILLED', message='Order filled successfully'}
+19:48:44.259 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:44.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:44.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL AMZN 150 shares @ ${:.2f}
+19:48:44.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000023: REJECTED
+19:48:44.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000023', status='REJECTED', message='Order rejected by receiver'}
+19:48:44.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000023', status='REJECTED', message='Order rejected by receiver'}
+19:48:44.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY TSLA 416 shares @ ${:.2f}
+19:48:44.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000024: FILLED
+19:48:44.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000024', status='FILLED', message='Order filled successfully'}
+19:48:44.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000024', status='FILLED', message='Order filled successfully'}
+19:48:47.258 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:47.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:47.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY INTC 762 shares @ ${:.2f}
+19:48:47.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000025: REJECTED
+19:48:47.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000025', status='REJECTED', message='Order rejected by receiver'}
+19:48:47.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000025', status='REJECTED', message='Order rejected by receiver'}
+19:48:47.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY LRCX 441 shares @ ${:.2f}
+19:48:47.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000026: FILLED
+19:48:47.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000026', status='FILLED', message='Order filled successfully'}
+19:48:47.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000026', status='FILLED', message='Order filled successfully'}
+19:48:50.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:50.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:50.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY KLAC 549 shares @ ${:.2f}
+19:48:50.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000027: REJECTED
+19:48:50.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000027', status='REJECTED', message='Order rejected by receiver'}
+19:48:50.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000027', status='REJECTED', message='Order rejected by receiver'}
+19:48:50.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY GOOGL 616 shares @ ${:.2f}
+19:48:50.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000028: FILLED
+19:48:50.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000028', status='FILLED', message='Order filled successfully'}
+19:48:50.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000028', status='FILLED', message='Order filled successfully'}
+19:48:53.259 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:53.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:53.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY AMD 299 shares @ ${:.2f}
+19:48:53.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000029: REJECTED
+19:48:53.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000029', status='REJECTED', message='Order rejected by receiver'}
+19:48:53.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000029', status='REJECTED', message='Order rejected by receiver'}
+19:48:53.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AVGO 229 shares @ ${:.2f}
+19:48:53.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000030: FILLED
+19:48:53.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000030', status='FILLED', message='Order filled successfully'}
+19:48:53.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000030', status='FILLED', message='Order filled successfully'}
+19:48:56.261 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:56.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:56.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY AAPL 618 shares @ ${:.2f}
+19:48:56.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000031: REJECTED
+19:48:56.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000031', status='REJECTED', message='Order rejected by receiver'}
+19:48:56.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000031', status='REJECTED', message='Order rejected by receiver'}
+19:48:56.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL NVDA 451 shares @ ${:.2f}
+19:48:56.266 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000032: FILLED
+19:48:56.266 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000032', status='FILLED', message='Order filled successfully'}
+19:48:56.266 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000032', status='FILLED', message='Order filled successfully'}
+19:48:59.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:48:59.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:48:59.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL AMZN 653 shares @ ${:.2f}
+19:48:59.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000033: REJECTED
+19:48:59.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000033', status='REJECTED', message='Order rejected by receiver'}
+19:48:59.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000033', status='REJECTED', message='Order rejected by receiver'}
+19:48:59.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL ADI 265 shares @ ${:.2f}
+19:48:59.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000034: FILLED
+19:48:59.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000034', status='FILLED', message='Order filled successfully'}
+19:48:59.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000034', status='FILLED', message='Order filled successfully'}
+19:49:02.261 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:02.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:02.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY ADBE 622 shares @ ${:.2f}
+19:49:02.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000035: REJECTED
+19:49:02.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000035', status='REJECTED', message='Order rejected by receiver'}
+19:49:02.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000035', status='REJECTED', message='Order rejected by receiver'}
+19:49:02.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL ADBE 815 shares @ ${:.2f}
+19:49:02.265 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000036: FILLED
+19:49:02.265 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000036', status='FILLED', message='Order filled successfully'}
+19:49:02.265 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000036', status='FILLED', message='Order filled successfully'}
+19:49:05.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:05.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:05.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY KLAC 689 shares @ ${:.2f}
+19:49:05.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000037: REJECTED
+19:49:05.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000037', status='REJECTED', message='Order rejected by receiver'}
+19:49:05.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000037', status='REJECTED', message='Order rejected by receiver'}
+19:49:05.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY CRM 419 shares @ ${:.2f}
+19:49:05.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000038: FILLED
+19:49:05.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000038', status='FILLED', message='Order filled successfully'}
+19:49:05.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000038', status='FILLED', message='Order filled successfully'}
+19:49:08.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:08.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:08.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY AMD 269 shares @ ${:.2f}
+19:49:08.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000039: REJECTED
+19:49:08.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000039', status='REJECTED', message='Order rejected by receiver'}
+19:49:08.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000039', status='REJECTED', message='Order rejected by receiver'}
+19:49:08.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY ORCL 1022 shares @ ${:.2f}
+19:49:08.261 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000040: FILLED
+19:49:08.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000040', status='FILLED', message='Order filled successfully'}
+19:49:08.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000040', status='FILLED', message='Order filled successfully'}
+19:49:11.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:11.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:11.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL KLAC 914 shares @ ${:.2f}
+19:49:11.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000041: REJECTED
+19:49:11.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000041', status='REJECTED', message='Order rejected by receiver'}
+19:49:11.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000041', status='REJECTED', message='Order rejected by receiver'}
+19:49:11.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY MU 414 shares @ ${:.2f}
+19:49:11.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000042: FILLED
+19:49:11.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000042', status='FILLED', message='Order filled successfully'}
+19:49:11.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000042', status='FILLED', message='Order filled successfully'}
+19:49:14.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:14.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:14.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL QCOM 780 shares @ ${:.2f}
+19:49:14.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000043: REJECTED
+19:49:14.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000043', status='REJECTED', message='Order rejected by receiver'}
+19:49:14.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000043', status='REJECTED', message='Order rejected by receiver'}
+19:49:14.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY NFLX 330 shares @ ${:.2f}
+19:49:14.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000044: FILLED
+19:49:14.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000044', status='FILLED', message='Order filled successfully'}
+19:49:14.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000044', status='FILLED', message='Order filled successfully'}
+19:49:17.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:17.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:17.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL ADI 371 shares @ ${:.2f}
+19:49:17.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000045: REJECTED
+19:49:17.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000045', status='REJECTED', message='Order rejected by receiver'}
+19:49:17.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000045', status='REJECTED', message='Order rejected by receiver'}
+19:49:17.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY INTC 556 shares @ ${:.2f}
+19:49:17.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000046: FILLED
+19:49:17.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000046', status='FILLED', message='Order filled successfully'}
+19:49:17.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000046', status='FILLED', message='Order filled successfully'}
+19:49:20.252 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:20.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:20.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL ADBE 833 shares @ ${:.2f}
+19:49:20.253 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000047: REJECTED
+19:49:20.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000047', status='REJECTED', message='Order rejected by receiver'}
+19:49:20.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000047', status='REJECTED', message='Order rejected by receiver'}
+19:49:20.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY MSFT 896 shares @ ${:.2f}
+19:49:20.255 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000048: FILLED
+19:49:20.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000048', status='FILLED', message='Order filled successfully'}
+19:49:20.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000048', status='FILLED', message='Order filled successfully'}
+19:49:23.252 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:23.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:23.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY QCOM 814 shares @ ${:.2f}
+19:49:23.254 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000049: REJECTED
+19:49:23.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000049', status='REJECTED', message='Order rejected by receiver'}
+19:49:23.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000049', status='REJECTED', message='Order rejected by receiver'}
+19:49:23.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AMZN 974 shares @ ${:.2f}
+19:49:23.255 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000050: FILLED
+19:49:23.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000050', status='FILLED', message='Order filled successfully'}
+19:49:23.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000050', status='FILLED', message='Order filled successfully'}
+19:49:26.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:26.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:26.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TSLA 516 shares @ ${:.2f}
+19:49:26.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000051: REJECTED
+19:49:26.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000051', status='REJECTED', message='Order rejected by receiver'}
+19:49:26.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000051', status='REJECTED', message='Order rejected by receiver'}
+19:49:26.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL KLAC 768 shares @ ${:.2f}
+19:49:26.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000052: FILLED
+19:49:26.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000052', status='FILLED', message='Order filled successfully'}
+19:49:26.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000052', status='FILLED', message='Order filled successfully'}
+19:49:29.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:29.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:29.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY NFLX 128 shares @ ${:.2f}
+19:49:29.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000053: REJECTED
+19:49:29.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000053', status='REJECTED', message='Order rejected by receiver'}
+19:49:29.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000053', status='REJECTED', message='Order rejected by receiver'}
+19:49:29.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY META 650 shares @ ${:.2f}
+19:49:29.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000054: FILLED
+19:49:29.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000054', status='FILLED', message='Order filled successfully'}
+19:49:29.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000054', status='FILLED', message='Order filled successfully'}
+19:49:32.258 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:32.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:32.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TSLA 387 shares @ ${:.2f}
+19:49:32.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000055: REJECTED
+19:49:32.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000055', status='REJECTED', message='Order rejected by receiver'}
+19:49:32.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000055', status='REJECTED', message='Order rejected by receiver'}
+19:49:32.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL TXN 414 shares @ ${:.2f}
+19:49:32.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000056: FILLED
+19:49:32.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000056', status='FILLED', message='Order filled successfully'}
+19:49:32.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000056', status='FILLED', message='Order filled successfully'}
+19:49:35.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:35.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:35.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY GOOGL 585 shares @ ${:.2f}
+19:49:35.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000057: REJECTED
+19:49:35.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000057', status='REJECTED', message='Order rejected by receiver'}
+19:49:35.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000057', status='REJECTED', message='Order rejected by receiver'}
+19:49:35.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY MSFT 241 shares @ ${:.2f}
+19:49:35.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000058: FILLED
+19:49:35.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000058', status='FILLED', message='Order filled successfully'}
+19:49:35.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000058', status='FILLED', message='Order filled successfully'}
+19:49:38.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:38.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:38.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL ORCL 364 shares @ ${:.2f}
+19:49:38.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000059: REJECTED
+19:49:38.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000059', status='REJECTED', message='Order rejected by receiver'}
+19:49:38.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000059', status='REJECTED', message='Order rejected by receiver'}
+19:49:38.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY GOOGL 920 shares @ ${:.2f}
+19:49:38.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000060: FILLED
+19:49:38.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000060', status='FILLED', message='Order filled successfully'}
+19:49:38.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000060', status='FILLED', message='Order filled successfully'}
+19:49:41.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:41.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:41.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TXN 281 shares @ ${:.2f}
+19:49:41.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000061: REJECTED
+19:49:41.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000061', status='REJECTED', message='Order rejected by receiver'}
+19:49:41.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000061', status='REJECTED', message='Order rejected by receiver'}
+19:49:41.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL META 554 shares @ ${:.2f}
+19:49:41.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000062: FILLED
+19:49:41.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000062', status='FILLED', message='Order filled successfully'}
+19:49:41.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000062', status='FILLED', message='Order filled successfully'}
+19:49:44.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:44.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:44.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY AMZN 468 shares @ ${:.2f}
+19:49:44.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000063: REJECTED
+19:49:44.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000063', status='REJECTED', message='Order rejected by receiver'}
+19:49:44.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000063', status='REJECTED', message='Order rejected by receiver'}
+19:49:44.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL META 611 shares @ ${:.2f}
+19:49:44.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000064: FILLED
+19:49:44.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000064', status='FILLED', message='Order filled successfully'}
+19:49:44.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000064', status='FILLED', message='Order filled successfully'}
+19:49:47.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:47.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:47.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL MSFT 1014 shares @ ${:.2f}
+19:49:47.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000065: REJECTED
+19:49:47.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000065', status='REJECTED', message='Order rejected by receiver'}
+19:49:47.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000065', status='REJECTED', message='Order rejected by receiver'}
+19:49:47.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY KLAC 847 shares @ ${:.2f}
+19:49:47.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000066: FILLED
+19:49:47.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000066', status='FILLED', message='Order filled successfully'}
+19:49:47.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000066', status='FILLED', message='Order filled successfully'}
+19:49:50.251 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:50.251 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:50.251 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL GOOGL 669 shares @ ${:.2f}
+19:49:50.252 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000067: REJECTED
+19:49:50.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000067', status='REJECTED', message='Order rejected by receiver'}
+19:49:50.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000067', status='REJECTED', message='Order rejected by receiver'}
+19:49:50.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL ADBE 100 shares @ ${:.2f}
+19:49:50.253 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000068: FILLED
+19:49:50.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000068', status='FILLED', message='Order filled successfully'}
+19:49:50.253 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000068', status='FILLED', message='Order filled successfully'}
+19:49:53.252 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:53.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:53.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL NFLX 233 shares @ ${:.2f}
+19:49:53.253 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000069: REJECTED
+19:49:53.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000069', status='REJECTED', message='Order rejected by receiver'}
+19:49:53.253 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000069', status='REJECTED', message='Order rejected by receiver'}
+19:49:53.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL CRM 251 shares @ ${:.2f}
+19:49:53.254 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000070: FILLED
+19:49:53.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000070', status='FILLED', message='Order filled successfully'}
+19:49:53.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000070', status='FILLED', message='Order filled successfully'}
+19:49:56.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:56.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:56.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL TXN 892 shares @ ${:.2f}
+19:49:56.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000071: REJECTED
+19:49:56.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000071', status='REJECTED', message='Order rejected by receiver'}
+19:49:56.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000071', status='REJECTED', message='Order rejected by receiver'}
+19:49:56.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AMD 737 shares @ ${:.2f}
+19:49:56.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000072: FILLED
+19:49:56.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000072', status='FILLED', message='Order filled successfully'}
+19:49:56.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000072', status='FILLED', message='Order filled successfully'}
+19:49:59.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:49:59.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:49:59.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY CRM 520 shares @ ${:.2f}
+19:49:59.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000073: REJECTED
+19:49:59.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000073', status='REJECTED', message='Order rejected by receiver'}
+19:49:59.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000073', status='REJECTED', message='Order rejected by receiver'}
+19:49:59.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY META 1070 shares @ ${:.2f}
+19:49:59.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000074: FILLED
+19:49:59.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000074', status='FILLED', message='Order filled successfully'}
+19:49:59.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000074', status='FILLED', message='Order filled successfully'}
+19:50:02.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:02.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:02.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY MU 896 shares @ ${:.2f}
+19:50:02.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000075: REJECTED
+19:50:02.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000075', status='REJECTED', message='Order rejected by receiver'}
+19:50:02.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000075', status='REJECTED', message='Order rejected by receiver'}
+19:50:02.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL LRCX 546 shares @ ${:.2f}
+19:50:02.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000076: REJECTED
+19:50:02.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000076', status='REJECTED', message='Order rejected by receiver'}
+19:50:02.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000076', status='REJECTED', message='Order rejected by receiver'}
+19:50:05.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:05.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:05.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL QCOM 438 shares @ ${:.2f}
+19:50:05.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000077: REJECTED
+19:50:05.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000077', status='REJECTED', message='Order rejected by receiver'}
+19:50:05.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000077', status='REJECTED', message='Order rejected by receiver'}
+19:50:05.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY QCOM 670 shares @ ${:.2f}
+19:50:05.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000078: REJECTED
+19:50:05.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000078', status='REJECTED', message='Order rejected by receiver'}
+19:50:05.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000078', status='REJECTED', message='Order rejected by receiver'}
+19:50:08.261 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:08.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:08.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY AMD 816 shares @ ${:.2f}
+19:50:08.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000079: REJECTED
+19:50:08.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000079', status='REJECTED', message='Order rejected by receiver'}
+19:50:08.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000079', status='REJECTED', message='Order rejected by receiver'}
+19:50:08.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL CRM 1087 shares @ ${:.2f}
+19:50:08.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000080: REJECTED
+19:50:08.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000080', status='REJECTED', message='Order rejected by receiver'}
+19:50:08.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000080', status='REJECTED', message='Order rejected by receiver'}
+19:50:11.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:11.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:11.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY NFLX 397 shares @ ${:.2f}
+19:50:11.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000081: REJECTED
+19:50:11.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000081', status='REJECTED', message='Order rejected by receiver'}
+19:50:11.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000081', status='REJECTED', message='Order rejected by receiver'}
+19:50:11.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY META 210 shares @ ${:.2f}
+19:50:11.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000082: REJECTED
+19:50:11.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000082', status='REJECTED', message='Order rejected by receiver'}
+19:50:11.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000082', status='REJECTED', message='Order rejected by receiver'}
+19:50:14.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:14.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:14.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL QCOM 804 shares @ ${:.2f}
+19:50:14.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000083: REJECTED
+19:50:14.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000083', status='REJECTED', message='Order rejected by receiver'}
+19:50:14.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000083', status='REJECTED', message='Order rejected by receiver'}
+19:50:14.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AMD 495 shares @ ${:.2f}
+19:50:14.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000084: REJECTED
+19:50:14.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000084', status='REJECTED', message='Order rejected by receiver'}
+19:50:14.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000084', status='REJECTED', message='Order rejected by receiver'}
+19:50:17.252 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:17.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:17.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY ADBE 389 shares @ ${:.2f}
+19:50:17.253 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000085: REJECTED
+19:50:17.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000085', status='REJECTED', message='Order rejected by receiver'}
+19:50:17.253 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000085', status='REJECTED', message='Order rejected by receiver'}
+19:50:17.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AMD 413 shares @ ${:.2f}
+19:50:17.254 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000086: REJECTED
+19:50:17.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000086', status='REJECTED', message='Order rejected by receiver'}
+19:50:17.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000086', status='REJECTED', message='Order rejected by receiver'}
+19:50:20.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:20.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:20.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL MSFT 820 shares @ ${:.2f}
+19:50:20.255 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000087: REJECTED
+19:50:20.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000087', status='REJECTED', message='Order rejected by receiver'}
+19:50:20.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000087', status='REJECTED', message='Order rejected by receiver'}
+19:50:20.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY MU 1097 shares @ ${:.2f}
+19:50:20.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000088: REJECTED
+19:50:20.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000088', status='REJECTED', message='Order rejected by receiver'}
+19:50:20.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000088', status='REJECTED', message='Order rejected by receiver'}
+19:50:23.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:23.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:23.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL CRM 173 shares @ ${:.2f}
+19:50:23.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000089: REJECTED
+19:50:23.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000089', status='REJECTED', message='Order rejected by receiver'}
+19:50:23.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000089', status='REJECTED', message='Order rejected by receiver'}
+19:50:23.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL META 851 shares @ ${:.2f}
+19:50:23.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000090: REJECTED
+19:50:23.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000090', status='REJECTED', message='Order rejected by receiver'}
+19:50:23.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000090', status='REJECTED', message='Order rejected by receiver'}
+19:50:26.258 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:26.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:26.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL CRM 549 shares @ ${:.2f}
+19:50:26.261 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000091: REJECTED
+19:50:26.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000091', status='REJECTED', message='Order rejected by receiver'}
+19:50:26.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000091', status='REJECTED', message='Order rejected by receiver'}
+19:50:26.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AAPL 435 shares @ ${:.2f}
+19:50:26.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000092: REJECTED
+19:50:26.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000092', status='REJECTED', message='Order rejected by receiver'}
+19:50:26.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000092', status='REJECTED', message='Order rejected by receiver'}
+19:50:29.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:29.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:29.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY GOOGL 136 shares @ ${:.2f}
+19:50:29.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000093: REJECTED
+19:50:29.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000093', status='REJECTED', message='Order rejected by receiver'}
+19:50:29.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000093', status='REJECTED', message='Order rejected by receiver'}
+19:50:29.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AMD 156 shares @ ${:.2f}
+19:50:29.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000094: REJECTED
+19:50:29.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000094', status='REJECTED', message='Order rejected by receiver'}
+19:50:29.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000094', status='REJECTED', message='Order rejected by receiver'}
+19:50:32.259 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:32.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:32.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY TSLA 144 shares @ ${:.2f}
+19:50:32.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000095: REJECTED
+19:50:32.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000095', status='REJECTED', message='Order rejected by receiver'}
+19:50:32.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000095', status='REJECTED', message='Order rejected by receiver'}
+19:50:32.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AVGO 781 shares @ ${:.2f}
+19:50:32.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000096: REJECTED
+19:50:32.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000096', status='REJECTED', message='Order rejected by receiver'}
+19:50:32.265 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000096', status='REJECTED', message='Order rejected by receiver'}
+19:50:35.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:35.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:35.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY GOOGL 1075 shares @ ${:.2f}
+19:50:35.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000097: REJECTED
+19:50:35.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000097', status='REJECTED', message='Order rejected by receiver'}
+19:50:35.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000097', status='REJECTED', message='Order rejected by receiver'}
+19:50:35.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL TSLA 500 shares @ ${:.2f}
+19:50:35.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000098: REJECTED
+19:50:35.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000098', status='REJECTED', message='Order rejected by receiver'}
+19:50:35.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000098', status='REJECTED', message='Order rejected by receiver'}
+19:50:38.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:38.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:38.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY ORCL 453 shares @ ${:.2f}
+19:50:38.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000099: REJECTED
+19:50:38.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000099', status='REJECTED', message='Order rejected by receiver'}
+19:50:38.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000099', status='REJECTED', message='Order rejected by receiver'}
+19:50:38.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY TXN 192 shares @ ${:.2f}
+19:50:38.261 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000100: REJECTED
+19:50:38.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000100', status='REJECTED', message='Order rejected by receiver'}
+19:50:38.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000100', status='REJECTED', message='Order rejected by receiver'}
+19:50:41.261 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:41.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:41.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY NVDA 1034 shares @ ${:.2f}
+19:50:41.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000101: REJECTED
+19:50:41.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000101', status='REJECTED', message='Order rejected by receiver'}
+19:50:41.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000101', status='REJECTED', message='Order rejected by receiver'}
+19:50:41.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AAPL 900 shares @ ${:.2f}
+19:50:41.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000102: REJECTED
+19:50:41.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000102', status='REJECTED', message='Order rejected by receiver'}
+19:50:41.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000102', status='REJECTED', message='Order rejected by receiver'}
+19:50:44.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:44.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:44.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL ADBE 789 shares @ ${:.2f}
+19:50:44.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000103: REJECTED
+19:50:44.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000103', status='REJECTED', message='Order rejected by receiver'}
+19:50:44.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000103', status='REJECTED', message='Order rejected by receiver'}
+19:50:44.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY NVDA 592 shares @ ${:.2f}
+19:50:44.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000104: REJECTED
+19:50:44.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000104', status='REJECTED', message='Order rejected by receiver'}
+19:50:44.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000104', status='REJECTED', message='Order rejected by receiver'}
+19:50:47.259 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:47.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:47.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY AMZN 137 shares @ ${:.2f}
+19:50:47.261 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000105: REJECTED
+19:50:47.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000105', status='REJECTED', message='Order rejected by receiver'}
+19:50:47.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000105', status='REJECTED', message='Order rejected by receiver'}
+19:50:47.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL GOOGL 735 shares @ ${:.2f}
+19:50:47.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000106: REJECTED
+19:50:47.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000106', status='REJECTED', message='Order rejected by receiver'}
+19:50:47.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000106', status='REJECTED', message='Order rejected by receiver'}
+19:50:50.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:50.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:50.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: SELL META 909 shares @ ${:.2f}
+19:50:50.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000107: REJECTED
+19:50:50.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000107', status='REJECTED', message='Order rejected by receiver'}
+19:50:50.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000107', status='REJECTED', message='Order rejected by receiver'}
+19:50:50.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AAPL 779 shares @ ${:.2f}
+19:50:50.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000108: REJECTED
+19:50:50.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000108', status='REJECTED', message='Order rejected by receiver'}
+19:50:50.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000108', status='REJECTED', message='Order rejected by receiver'}
+19:50:53.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:53.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:53.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY ORCL 623 shares @ ${:.2f}
+19:50:53.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000109: REJECTED
+19:50:53.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000109', status='REJECTED', message='Order rejected by receiver'}
+19:50:53.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000109', status='REJECTED', message='Order rejected by receiver'}
+19:50:53.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AMD 563 shares @ ${:.2f}
+19:50:53.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000110: REJECTED
+19:50:53.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000110', status='REJECTED', message='Order rejected by receiver'}
+19:50:53.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000110', status='REJECTED', message='Order rejected by receiver'}
+19:50:56.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 2 healthy receiver instances
+19:50:56.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 2 receivers, sending mock order
+19:50:56.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-1: BUY MSFT 671 shares @ ${:.2f}
+19:50:56.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000111: REJECTED
+19:50:56.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-1: OrderResponse{orderId='SENDER-000111', status='REJECTED', message='Order rejected by receiver'}
+19:50:56.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-1: OrderResponse{orderId='SENDER-000111', status='REJECTED', message='Order rejected by receiver'}
+19:50:56.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AMD 533 shares @ ${:.2f}
+19:50:56.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000112: REJECTED
+19:50:56.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000112', status='REJECTED', message='Order rejected by receiver'}
+19:50:56.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000112', status='REJECTED', message='Order rejected by receiver'}
+19:50:59.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:50:59.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:50:59.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL NFLX 495 shares @ ${:.2f}
+19:50:59.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000113: REJECTED
+19:50:59.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000113', status='REJECTED', message='Order rejected by receiver'}
+19:50:59.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000113', status='REJECTED', message='Order rejected by receiver'}
+19:51:02.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:02.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:02.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL GOOGL 195 shares @ ${:.2f}
+19:51:02.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000114: REJECTED
+19:51:02.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000114', status='REJECTED', message='Order rejected by receiver'}
+19:51:02.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000114', status='REJECTED', message='Order rejected by receiver'}
+19:51:05.251 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:05.251 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:05.251 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY INTC 987 shares @ ${:.2f}
+19:51:05.252 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000115: REJECTED
+19:51:05.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000115', status='REJECTED', message='Order rejected by receiver'}
+19:51:05.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000115', status='REJECTED', message='Order rejected by receiver'}
+19:51:08.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:08.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:08.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL NVDA 546 shares @ ${:.2f}
+19:51:08.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000116: REJECTED
+19:51:08.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000116', status='REJECTED', message='Order rejected by receiver'}
+19:51:08.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000116', status='REJECTED', message='Order rejected by receiver'}
+19:51:11.252 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:11.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:11.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY ADI 376 shares @ ${:.2f}
+19:51:11.254 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000117: REJECTED
+19:51:11.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000117', status='REJECTED', message='Order rejected by receiver'}
+19:51:11.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000117', status='REJECTED', message='Order rejected by receiver'}
+19:51:14.260 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:14.261 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:14.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AAPL 869 shares @ ${:.2f}
+19:51:14.263 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000118: REJECTED
+19:51:14.263 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000118', status='REJECTED', message='Order rejected by receiver'}
+19:51:14.263 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000118', status='REJECTED', message='Order rejected by receiver'}
+19:51:17.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:17.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:17.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL CRM 723 shares @ ${:.2f}
+19:51:17.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000119: REJECTED
+19:51:17.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000119', status='REJECTED', message='Order rejected by receiver'}
+19:51:17.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000119', status='REJECTED', message='Order rejected by receiver'}
+19:51:20.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:20.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:20.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AVGO 239 shares @ ${:.2f}
+19:51:20.255 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000120: REJECTED
+19:51:20.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000120', status='REJECTED', message='Order rejected by receiver'}
+19:51:20.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000120', status='REJECTED', message='Order rejected by receiver'}
+19:51:23.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:23.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:23.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AAPL 547 shares @ ${:.2f}
+19:51:23.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000121: REJECTED
+19:51:23.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000121', status='REJECTED', message='Order rejected by receiver'}
+19:51:23.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000121', status='REJECTED', message='Order rejected by receiver'}
+19:51:26.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:26.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:26.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY GOOGL 206 shares @ ${:.2f}
+19:51:26.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000122: REJECTED
+19:51:26.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000122', status='REJECTED', message='Order rejected by receiver'}
+19:51:26.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000122', status='REJECTED', message='Order rejected by receiver'}
+19:51:29.252 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:29.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:29.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY GOOGL 605 shares @ ${:.2f}
+19:51:29.253 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000123: REJECTED
+19:51:29.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000123', status='REJECTED', message='Order rejected by receiver'}
+19:51:29.253 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000123', status='REJECTED', message='Order rejected by receiver'}
+19:51:32.254 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:32.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:32.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AVGO 941 shares @ ${:.2f}
+19:51:32.255 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000124: REJECTED
+19:51:32.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000124', status='REJECTED', message='Order rejected by receiver'}
+19:51:32.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000124', status='REJECTED', message='Order rejected by receiver'}
+19:51:35.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:35.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:35.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY META 1028 shares @ ${:.2f}
+19:51:35.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000125: REJECTED
+19:51:35.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000125', status='REJECTED', message='Order rejected by receiver'}
+19:51:35.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000125', status='REJECTED', message='Order rejected by receiver'}
+19:51:38.259 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:38.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:38.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY ORCL 767 shares @ ${:.2f}
+19:51:38.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000126: REJECTED
+19:51:38.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000126', status='REJECTED', message='Order rejected by receiver'}
+19:51:38.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000126', status='REJECTED', message='Order rejected by receiver'}
+19:51:41.252 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:41.252 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:41.252 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AMZN 329 shares @ ${:.2f}
+19:51:41.254 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000127: REJECTED
+19:51:41.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000127', status='REJECTED', message='Order rejected by receiver'}
+19:51:41.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000127', status='REJECTED', message='Order rejected by receiver'}
+19:51:44.260 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:44.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:44.261 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL KLAC 907 shares @ ${:.2f}
+19:51:44.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000128: REJECTED
+19:51:44.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000128', status='REJECTED', message='Order rejected by receiver'}
+19:51:44.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000128', status='REJECTED', message='Order rejected by receiver'}
+19:51:47.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:47.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:47.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL NFLX 496 shares @ ${:.2f}
+19:51:47.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000129: REJECTED
+19:51:47.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000129', status='REJECTED', message='Order rejected by receiver'}
+19:51:47.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000129', status='REJECTED', message='Order rejected by receiver'}
+19:51:50.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:50.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:50.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AMZN 691 shares @ ${:.2f}
+19:51:50.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000130: REJECTED
+19:51:50.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000130', status='REJECTED', message='Order rejected by receiver'}
+19:51:50.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000130', status='REJECTED', message='Order rejected by receiver'}
+19:51:53.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:53.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:53.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AAPL 986 shares @ ${:.2f}
+19:51:53.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000131: REJECTED
+19:51:53.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000131', status='REJECTED', message='Order rejected by receiver'}
+19:51:53.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000131', status='REJECTED', message='Order rejected by receiver'}
+19:51:56.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:56.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:56.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY LRCX 870 shares @ ${:.2f}
+19:51:56.259 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000132: REJECTED
+19:51:56.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000132', status='REJECTED', message='Order rejected by receiver'}
+19:51:56.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000132', status='REJECTED', message='Order rejected by receiver'}
+19:51:59.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:51:59.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:51:59.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL MU 974 shares @ ${:.2f}
+19:51:59.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000133: REJECTED
+19:51:59.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000133', status='REJECTED', message='Order rejected by receiver'}
+19:51:59.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000133', status='REJECTED', message='Order rejected by receiver'}
+19:52:02.258 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:02.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:02.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AMD 560 shares @ ${:.2f}
+19:52:02.261 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000134: REJECTED
+19:52:02.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000134', status='REJECTED', message='Order rejected by receiver'}
+19:52:02.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000134', status='REJECTED', message='Order rejected by receiver'}
+19:52:05.253 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:05.253 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:05.253 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY LRCX 762 shares @ ${:.2f}
+19:52:05.254 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000135: REJECTED
+19:52:05.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000135', status='REJECTED', message='Order rejected by receiver'}
+19:52:05.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000135', status='REJECTED', message='Order rejected by receiver'}
+19:52:08.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:08.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:08.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY ADBE 479 shares @ ${:.2f}
+19:52:08.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000136: REJECTED
+19:52:08.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000136', status='REJECTED', message='Order rejected by receiver'}
+19:52:08.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000136', status='REJECTED', message='Order rejected by receiver'}
+19:52:11.258 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:11.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:11.259 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL LRCX 107 shares @ ${:.2f}
+19:52:11.262 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000137: REJECTED
+19:52:11.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000137', status='REJECTED', message='Order rejected by receiver'}
+19:52:11.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000137', status='REJECTED', message='Order rejected by receiver'}
+19:52:14.262 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:14.262 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:14.262 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY NFLX 918 shares @ ${:.2f}
+19:52:14.264 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000138: REJECTED
+19:52:14.264 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000138', status='REJECTED', message='Order rejected by receiver'}
+19:52:14.264 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000138', status='REJECTED', message='Order rejected by receiver'}
+19:52:17.253 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:17.254 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:17.254 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY LRCX 350 shares @ ${:.2f}
+19:52:17.255 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000139: REJECTED
+19:52:17.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000139', status='REJECTED', message='Order rejected by receiver'}
+19:52:17.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000139', status='REJECTED', message='Order rejected by receiver'}
+19:52:20.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:20.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:20.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL KLAC 626 shares @ ${:.2f}
+19:52:20.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000140: REJECTED
+19:52:20.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000140', status='REJECTED', message='Order rejected by receiver'}
+19:52:20.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000140', status='REJECTED', message='Order rejected by receiver'}
+19:52:23.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:23.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:23.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL NVDA 572 shares @ ${:.2f}
+19:52:23.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000141: REJECTED
+19:52:23.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000141', status='REJECTED', message='Order rejected by receiver'}
+19:52:23.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000141', status='REJECTED', message='Order rejected by receiver'}
+19:52:26.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:26.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:26.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AAPL 311 shares @ ${:.2f}
+19:52:26.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000142: REJECTED
+19:52:26.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000142', status='REJECTED', message='Order rejected by receiver'}
+19:52:26.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000142', status='REJECTED', message='Order rejected by receiver'}
+19:52:29.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:29.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:29.255 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL NVDA 713 shares @ ${:.2f}
+19:52:29.256 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000143: REJECTED
+19:52:29.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000143', status='REJECTED', message='Order rejected by receiver'}
+19:52:29.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000143', status='REJECTED', message='Order rejected by receiver'}
+19:52:32.255 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:32.255 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:32.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY ORCL 422 shares @ ${:.2f}
+19:52:32.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000144: REJECTED
+19:52:32.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000144', status='REJECTED', message='Order rejected by receiver'}
+19:52:32.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000144', status='REJECTED', message='Order rejected by receiver'}
+19:52:35.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:35.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:35.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY TSLA 1007 shares @ ${:.2f}
+19:52:35.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000145: REJECTED
+19:52:35.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000145', status='REJECTED', message='Order rejected by receiver'}
+19:52:35.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000145', status='REJECTED', message='Order rejected by receiver'}
+19:52:38.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:38.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:38.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL ADI 268 shares @ ${:.2f}
+19:52:38.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000146: REJECTED
+19:52:38.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000146', status='REJECTED', message='Order rejected by receiver'}
+19:52:38.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000146', status='REJECTED', message='Order rejected by receiver'}
+19:52:41.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:41.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:41.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY MU 798 shares @ ${:.2f}
+19:52:41.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000147: REJECTED
+19:52:41.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000147', status='REJECTED', message='Order rejected by receiver'}
+19:52:41.259 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000147', status='REJECTED', message='Order rejected by receiver'}
+19:52:44.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:44.256 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:44.256 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AAPL 886 shares @ ${:.2f}
+19:52:44.257 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000148: REJECTED
+19:52:44.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000148', status='REJECTED', message='Order rejected by receiver'}
+19:52:44.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000148', status='REJECTED', message='Order rejected by receiver'}
+19:52:47.257 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:47.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:47.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: SELL AMZN 589 shares @ ${:.2f}
+19:52:47.260 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000149: REJECTED
+19:52:47.260 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000149', status='REJECTED', message='Order rejected by receiver'}
+19:52:47.260 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000149', status='REJECTED', message='Order rejected by receiver'}
+19:52:50.256 [pool-2-thread-1] INFO  c.e.o.consul.ConsulServiceDiscovery - Found 1 healthy receiver instances
+19:52:50.257 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Found 1 receivers, sending mock order
+19:52:50.257 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Sending order to order-receiver-2: BUY AAPL 1000 shares @ ${:.2f}
+19:52:50.258 [pool-2-thread-1] INFO  c.example.ordersender.OrderManager - Added response for order SENDER-000150: REJECTED
+19:52:50.258 [pool-2-thread-1] INFO  c.e.ordersender.sender.OrderSender - Received response from order-receiver-2: OrderResponse{orderId='SENDER-000150', status='REJECTED', message='Order rejected by receiver'}
+19:52:50.258 [pool-2-thread-1] INFO  c.e.o.OrderSenderApplication - Order sent to order-receiver-2: OrderResponse{orderId='SENDER-000150', status='REJECTED', message='Order rejected by receiver'}

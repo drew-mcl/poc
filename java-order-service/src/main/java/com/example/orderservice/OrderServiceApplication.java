@@ -1,8 +1,8 @@
 package com.example.orderservice;
 
 import com.example.orderservice.consul.ConsulRegistration;
-import com.example.orderservice.grpc.GrpcServer;
-import com.example.orderservice.tcp.TcpServer;
+import com.example.orderservice.admin.AdminServer;
+import com.example.orderservice.fix.FixServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class OrderServiceApplication {
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceApplication.class);
     
-    private final GrpcServer grpcServer;
-    private final TcpServer tcpServer;
+    private final AdminServer adminServer;
+    private final FixServer fixServer;
     private final ConsulRegistration consulRegistration;
     private final OrderManager orderManager;
     private final ScheduledExecutorService scheduler;
@@ -23,14 +23,21 @@ public class OrderServiceApplication {
         // Print configuration at startup
         ServiceConfig.printConfiguration();
         
+        // Create OrderManager first (without server dependencies)
         this.orderManager = new OrderManager();
-        this.grpcServer = new GrpcServer(ServiceConfig.GRPC_PORT, orderManager);
-        this.tcpServer = new TcpServer(ServiceConfig.TCP_PORT, orderManager);
+        
+        // Create servers with OrderManager reference
+        this.fixServer = new FixServer(ServiceConfig.FIX_PORT, this.orderManager);
+        this.adminServer = new AdminServer(ServiceConfig.ADMIN_PORT, this.orderManager);
+        
+        // Set the application reference in OrderManager for server control
+        this.orderManager.setApplication(this);
+        
         this.consulRegistration = new ConsulRegistration(
             ServiceConfig.SERVICE_NAME, 
             ServiceConfig.SERVICE_ID, 
-            ServiceConfig.TCP_PORT, 
-            ServiceConfig.GRPC_PORT
+            ServiceConfig.FIX_PORT, 
+            ServiceConfig.ADMIN_PORT
         );
         this.scheduler = Executors.newScheduledThreadPool(1);
     }
@@ -39,13 +46,13 @@ public class OrderServiceApplication {
         try {
             logger.info("Starting Order Service (ID: {})...", ServiceConfig.SERVICE_ID);
             
-            // Start TCP server
-            tcpServer.start();
-            logger.info("TCP server started on port {}", ServiceConfig.TCP_PORT);
+            // Start FIX server
+            fixServer.start();
+            logger.info("FIX server started on port {}", ServiceConfig.FIX_PORT);
             
-            // Start gRPC server
-            grpcServer.start();
-            logger.info("gRPC server started on port {}", ServiceConfig.GRPC_PORT);
+            // Start admin server
+            adminServer.start();
+            logger.info("Admin server started on port {}", ServiceConfig.ADMIN_PORT);
             
             // Register with Consul
             consulRegistration.register();
@@ -98,12 +105,47 @@ public class OrderServiceApplication {
         try {
             scheduler.shutdown();
             consulRegistration.deregister();
-            grpcServer.shutdown();
-            tcpServer.shutdown();
+            adminServer.shutdown();
+            fixServer.shutdown();
             logger.info("Order Service shutdown complete");
         } catch (Exception e) {
             logger.error("Error during shutdown", e);
         }
+    }
+    
+    // Method to toggle the FIX server
+    public void toggleFixServer(boolean enable) {
+        try {
+            if (enable && !fixServer.isRunning()) {
+                fixServer.start();
+                logger.info(">>> FIX server ENABLED via admin command <<<");
+            } else if (!enable && fixServer.isRunning()) {
+                fixServer.forceShutdown();
+                logger.info(">>> FIX server DISABLED via admin command <<<");
+            }
+        } catch (Exception e) {
+            logger.error("Error toggling FIX server", e);
+        }
+    }
+
+    // Method to toggle the Admin server
+    public void toggleAdminServer(boolean enable) {
+        try {
+            if (enable) {
+                // Restarting a gRPC server is more complex, this is a simplified example
+                logger.info(">>> Enabling Admin server is not dynamically supported in this example. <<<");
+            } else {
+                adminServer.forceShutdown();
+                logger.info(">>> Admin server DISABLED via admin command <<<");
+            }
+        } catch (Exception e) {
+            logger.error("Error toggling Admin server", e);
+        }
+    }
+    
+    // Method to check if TCP server is running
+    public boolean isTcpServerRunning() {
+        return fixServer.isRunning();
     }
     
     public static void main(String[] args) {

@@ -19,6 +19,9 @@ public class OrderManager {
     private final Random random = new Random();
     private volatile boolean rejectAllNewOrders = false;
     
+    // Reference to the main application for server control
+    private OrderServiceApplication application;
+    
     // FIX Stock Order Data
     private static final String[] STOCK_SYMBOLS = {
         "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "NFLX", "ADBE", "CRM",
@@ -57,14 +60,64 @@ public class OrderManager {
         }
     }
     
+    // Set the application reference for server control
+    public void setApplication(OrderServiceApplication application) {
+        this.application = application;
+    }
+    
     public void generateMockOrder() {
         // Legacy method - now calls generateMockFixOrder
         generateMockFixOrder();
     }
     
     public void generateMockFixOrder() {
-        if (this.rejectAllNewOrders) {
-            logger.error("REJECTED mock FIX order generation because 'reject all' mode is active.");
+        // Check if we should reject orders (reject mode is on OR TCP server is down)
+        boolean shouldReject = this.rejectAllNewOrders || !isTcpServerRunning();
+        
+        if (shouldReject) {
+            String orderId = "ORDER-" + String.format("%06d", orderCounter.getAndIncrement());
+            
+            // Generate order data even for rejected orders
+            int symbolIndex = random.nextInt(STOCK_SYMBOLS.length);
+            String symbol = STOCK_SYMBOLS[symbolIndex];
+            String ric = RICS[symbolIndex];
+            String side = random.nextBoolean() ? "1" : "2"; // 1=Buy, 2=Sell
+            int orderQty = random.nextInt(1000) + 100; // 100-1100 shares
+            double price = (random.nextDouble() * 500) + 50; // $50-$550
+            String ordType = random.nextBoolean() ? "1" : "2"; // 1=Market, 2=Limit
+            String timeInForce = random.nextBoolean() ? "0" : "1"; // 0=Day, 1=GTC
+            String account = ACCOUNTS[random.nextInt(ACCOUNTS.length)];
+            String exchange = EXCHANGES[random.nextInt(EXCHANGES.length)];
+            String currency = CURRENCIES[random.nextInt(CURRENCIES.length)];
+            
+            // Generate FIX message using orderId as ClOrdID
+            String fixMessage = generateFixMessage(orderId, symbol, side, orderQty, price, ordType, timeInForce, account, exchange, currency);
+            
+            Order order = Order.newBuilder()
+                    .setOrderId(orderId)
+                    .setSymbol(symbol)
+                    .setRic(ric)
+                    .setSide(side)
+                    .setOrderQty(orderQty)
+                    .setPrice(price)
+                    .setOrdType(ordType)
+                    .setTimeInForce(timeInForce)
+                    .setAccount(account)
+                    .setSecurityType("CS") // Common Stock
+                    .setCurrency(currency)
+                    .setExchange(exchange)
+                    .setTransactTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HH:mm:ss.SSS")))
+                    .setStatus(OrderStatus.REJECTED) // Mark as rejected
+                    .setCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                    .setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                    .setFixMessage(fixMessage)
+                    .build();
+            
+            orders.put(orderId, order);
+            
+            String reason = this.rejectAllNewOrders ? "reject mode active" : "TCP server not available";
+            logger.error("REJECTED mock FIX order: {} - {} {} {} shares @ ${:.2f} (reason: {})", 
+                       orderId, side.equals("1") ? "BUY" : "SELL", symbol, orderQty, price, reason);
             return;
         }
         
@@ -109,6 +162,14 @@ public class OrderManager {
         orders.put(orderId, order);
         logger.info("Generated mock FIX order: {} - {} {} {} shares @ ${:.2f}", 
                    orderId, side.equals("1") ? "BUY" : "SELL", symbol, orderQty, price);
+    }
+    
+    // Check if TCP server is running
+    private boolean isTcpServerRunning() {
+        if (application != null) {
+            return application.isTcpServerRunning();
+        }
+        return false;
     }
     
     private String generateFixMessage(String clOrdId, String symbol, String side, int orderQty, 
@@ -366,7 +427,8 @@ public class OrderManager {
                     "ListOpenOrders",
                     "ListCancelledOrRejectedOrders",
                     "GetServiceInfo",
-                    "GetFixConfig"
+                    "GetFixConfig",
+                    "ToggleFix"
                 ))
                 .setFixConfig(fixConfig)
                 .build();
@@ -406,5 +468,69 @@ public class OrderManager {
                 .setSuccess(true)
                 .setMessage("Service will now accept new incoming FIX orders.")
                 .build();
+    }
+    
+    // Method to toggle FIX server on/off (affects Consul health check)
+    public ToggleFixResponse toggleFix(ToggleFixRequest request) {
+        try {
+            boolean enabled = request.getEnabled();
+            
+            if (application != null) {
+                application.toggleFixServer(enabled);
+                String message = enabled ? 
+                    "FIX server ENABLED - Consul health check will pass" :
+                    "FIX server DISABLED - Consul health check will fail";
+                
+                return ToggleFixResponse.newBuilder()
+                        .setSuccess(true)
+                        .setMessage(message)
+                        .build();
+            } else {
+                logger.warn("Application reference not set, cannot toggle FIX server");
+                return ToggleFixResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage("Application reference not available")
+                        .build();
+            }
+                    
+        } catch (Exception e) {
+            logger.error("Error toggling FIX server", e);
+            return ToggleFixResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage("Failed to toggle FIX server: " + e.getMessage())
+                    .build();
+        }
+    }
+    
+    // Method to toggle admin server on/off (affects Consul gRPC health check)
+    public ToggleAdminResponse toggleAdmin(ToggleAdminRequest request) {
+        try {
+            boolean enabled = request.getEnabled();
+            
+            if (application != null) {
+                application.toggleAdminServer(enabled);
+                String message = enabled ? 
+                    "Admin server ENABLE command sent" :
+                    "Admin server DISABLED - Consul gRPC health check will fail";
+                
+                return ToggleAdminResponse.newBuilder()
+                        .setSuccess(true)
+                        .setMessage(message)
+                        .build();
+            } else {
+                logger.warn("Application reference not set, cannot toggle admin server");
+                return ToggleAdminResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage("Application reference not available")
+                        .build();
+            }
+                    
+        } catch (Exception e) {
+            logger.error("Error toggling admin server", e);
+            return ToggleAdminResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage("Failed to toggle admin server: " + e.getMessage())
+                    .build();
+        }
     }
 }

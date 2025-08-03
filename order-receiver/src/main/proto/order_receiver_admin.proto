@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package com.example.orderreceiver.grpc;
+
+option java_multiple_files = true;
+
+// Order Receiver Admin Service
+service OrderReceiverAdminService {
+  rpc GetServiceInfo(ServiceInfoRequest) returns (ServiceInfoResponse);
+  rpc RejectAllOrders(RejectAllOrdersRequest) returns (AdminActionResponse);
+  rpc AcceptAllOrders(AcceptAllOrdersRequest) returns (AdminActionResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+  rpc ListAllOrderIds(ListAllOrderIdsRequest) returns (ListAllOrderIdsResponse);
+  rpc ListRejectedOrderIds(ListRejectedOrderIdsRequest) returns (ListRejectedOrderIdsResponse);
+  rpc ListFilledOrderIds(ListFilledOrderIdsRequest) returns (ListFilledOrderIdsResponse);
+}
+
+// Request/Response messages
+message ServiceInfoRequest {}
+
+message ServiceInfoResponse {
+  string service_name = 1;
+  string version = 2;
+  string status = 3;
+  int32 order_count = 4;
+  int32 response_count = 5;
+  repeated string available_methods = 6;
+}
+
+message RejectAllOrdersRequest {}
+
+message AcceptAllOrdersRequest {}
+
+message AdminActionResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetOrderRequest {
+  string order_id = 1;
+}
+
+message GetOrderResponse {
+  bool success = 1;
+  Order order = 2;
+  string message = 3;
+}
+
+message ListAllOrderIdsRequest {}
+
+message ListAllOrderIdsResponse {
+  repeated string order_ids = 1;
+}
+
+message ListRejectedOrderIdsRequest {}
+
+message ListRejectedOrderIdsResponse {
+  repeated string order_ids = 1;
+}
+
+message ListFilledOrderIdsRequest {}
+
+message ListFilledOrderIdsResponse {
+  repeated string order_ids = 1;
+}
+
+// Order and Response messages
+message Order {
+  string order_id = 1;
+  string symbol = 2;
+  string side = 3;
+  int32 order_qty = 4;
+  double price = 5;
+  string account = 6;
+  string exchange = 7;
+  string transact_time = 8;
+}
+
+message OrderResponse {
+  string order_id = 1;
+  string status = 2;
+  string message = 3;
+} 

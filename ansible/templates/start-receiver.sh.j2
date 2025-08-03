@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Start Order Receiver
+echo "Starting Order Receiver..."
+
+# Set environment variables
+export SERVICE_NAME={{ receiver_service_name }}
+export ORDINAL={{ receiver_ordinal }}
+export SERVICE_ID={{ receiver_id }}
+export TCP_PORT={{ receiver_tcp_port }}
+export CONSUL_HOST={{ receiver_consul_host }}
+export CONSUL_PORT={{ receiver_consul_port }}
+export JAVA_HOME={{ java_home }}
+export JAVA_OPTS="-Xmx512m -Xms256m"
+
+# Kill any existing receiver processes
+pkill -f "order-receiver" || true
+
+# Start Order Receiver using gradlew from root
+cd {{ service_home }}/order-receiver
+nohup {{ service_home }}/../gradlew :order-receiver:run > {{ logs_dir }}/order-receiver.log 2>&1 &
+
+echo "Order Receiver started. Logs: {{ logs_dir }}/order-receiver.log" 

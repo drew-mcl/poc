@@ -14,22 +14,20 @@ echo "Starting $NUM_INSTANCES order service instances starting from ordinal $STA
 # Function to start a single instance
 start_instance() {
     local ordinal=$1
-    local tcp_port=$((8080 + ordinal - 1))
-    local grpc_port=$((9090 + ordinal - 1))
-    local fix_port=$((5001 + ordinal - 1))
+    local fix_port=$((8080 + ordinal - 1))
+    local admin_port=$((9090 + ordinal - 1))
     
-    echo "Starting order-service-$ordinal on TCP:$tcp_port, gRPC:$grpc_port, FIX:$fix_port"
+    echo "Starting order-service-$ordinal on FIX:$fix_port, Admin:$admin_port"
     
     # Set environment variables for this instance
     export ORDINAL=$ordinal
-    export TCP_PORT=$tcp_port
-    export GRPC_PORT=$grpc_port
-    export FIX_SOCKET_PORT=$fix_port
+    export FIX_PORT=$fix_port
+    export ADMIN_PORT=$admin_port
     export FIX_CLIENT_ID="ORDER_SERVICE_$(printf "%03d" $ordinal)"
     
     # Start the service in background
     cd java-order-service
-    ./gradlew bootRun > ../logs/order-service-$ordinal.log 2>&1 &
+    ../gradlew run > ../logs/order-service-$ordinal.log 2>&1 &
     cd ..
     
     # Store the PID

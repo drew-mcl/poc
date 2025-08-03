@@ -1,0 +1,61 @@
+---
+- name: Shutdown Order Sender/Receiver Services
+  hosts: all
+  become: yes
+  vars:
+    service_user: "orderuser"
+    service_home: "/opt/order-services"
+    logs_dir: "{{ service_home }}/logs"
+    
+  tasks:
+    - name: Stop Order Sender
+      command: "{{ service_home }}/stop-sender.sh"
+      args:
+        chdir: "{{ service_home }}"
+      become_user: "{{ service_user }}"
+      
+    - name: Stop Order Receiver
+      command: "{{ service_home }}/stop-receiver.sh"
+      args:
+        chdir: "{{ service_home }}"
+      become_user: "{{ service_user }}"
+      
+    - name: Stop Consul agent
+      command: "{{ service_home }}/stop-consul.sh"
+      args:
+        chdir: "{{ service_home }}"
+      become_user: "{{ service_user }}"
+      
+    - name: Check if any processes are still running
+      shell: |
+        pgrep -f "order-sender\|order-receiver\|consul agent" || echo "No processes found"
+      register: remaining_processes
+      ignore_errors: yes
+      
+    - name: Display remaining processes
+      debug:
+        msg: "Remaining processes: {{ remaining_processes.stdout }}"
+        
+    - name: Wait for ports to be released
+      wait_for:
+        port: "{{ item }}"
+        host: "{{ ansible_default_ipv4.address }}"
+        state: stopped
+        timeout: 30
+      loop:
+        - 8500  # Consul
+        - 9000  # Receiver 1
+        - 9001  # Receiver 2 (if exists)
+      ignore_errors: yes
+      
+    - name: Display shutdown status
+      debug:
+        msg: |
+          Services shutdown complete.
+          
+          Stopped services:
+          - Order Sender
+          - Order Receiver
+          - Consul Agent
+          
+          To restart, run: ansible-playbook ansible/playbook.yml 

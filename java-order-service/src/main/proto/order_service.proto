@@ -21,7 +21,17 @@ service OrderAdminService {
   
   // FIX Configuration RPCs
   rpc GetFixConfig(FixConfigRequest) returns (FixConfigResponse);
+  rpc ToggleFix(ToggleFixRequest) returns (ToggleFixResponse);
+  
+  // Admin server control RPCs
+  rpc ToggleAdmin(ToggleAdminRequest) returns (ToggleAdminResponse);
 }
+
+message ToggleFixRequest { bool enabled = 1; }
+message ToggleFixResponse { bool success = 1; string message = 2; }
+
+message ToggleAdminRequest { bool enabled = 1; }
+message ToggleAdminResponse { bool success = 1; string message = 2; }
 
 // FIX Configuration messages
 message FixConfigRequest {

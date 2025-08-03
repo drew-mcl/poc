@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Start Order Sender
+echo "Starting Order Sender..."
+
+# Set environment variables
+export SENDER_ID={{ sender_id }}
+export CONSUL_HOST={{ sender_consul_host }}
+export CONSUL_PORT={{ sender_consul_port }}
+export RECEIVER_SERVICE_NAME={{ sender_receiver_service_name }}
+export MOCK_ORDER_ENABLED={{ sender_mock_order_enabled | lower }}
+export MOCK_ORDER_INITIAL_DELAY={{ sender_mock_order_initial_delay }}
+export MOCK_ORDER_INTERVAL={{ sender_mock_order_interval }}
+export TCP_TIMEOUT_MS={{ sender_tcp_timeout_ms }}
+export TCP_RETRY_ATTEMPTS={{ sender_tcp_retry_attempts }}
+export JAVA_HOME={{ java_home }}
+export JAVA_OPTS="-Xmx512m -Xms256m"
+
+# Kill any existing sender processes
+pkill -f "order-sender" || true
+
+# Start Order Sender using gradlew from root
+cd {{ service_home }}/order-sender
+nohup {{ service_home }}/../gradlew :order-sender:run > {{ logs_dir }}/order-sender.log 2>&1 &
+
+echo "Order Sender started. Logs: {{ logs_dir }}/order-sender.log" 

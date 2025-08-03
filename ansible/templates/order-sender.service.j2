@@ -1,0 +1,33 @@
+[Unit]
+Description=Order Sender Service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User={{ service_user }}
+Group={{ service_group }}
+WorkingDirectory={{ service_home }}/order-sender
+ExecStart={{ service_home }}/order-sender/gradlew run
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables
+Environment=SENDER_ID={{ sender_id }}
+Environment=CONSUL_HOST={{ sender_consul_host }}
+Environment=CONSUL_PORT={{ sender_consul_port }}
+Environment=RECEIVER_SERVICE_NAME={{ sender_receiver_service_name }}
+Environment=MOCK_ORDER_ENABLED={{ sender_mock_order_enabled | lower }}
+Environment=MOCK_ORDER_INITIAL_DELAY={{ sender_mock_order_initial_delay }}
+Environment=MOCK_ORDER_INTERVAL={{ sender_mock_order_interval }}
+Environment=TCP_TIMEOUT_MS={{ sender_tcp_timeout_ms }}
+Environment=TCP_RETRY_ATTEMPTS={{ sender_tcp_retry_attempts }}
+
+# Java options
+Environment=JAVA_HOME={{ java_home }}
+Environment=JAVA_OPTS=-Xmx512m -Xms256m
+
+[Install]
+WantedBy=multi-user.target 

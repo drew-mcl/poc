@@ -6,17 +6,15 @@
 set -e
 
 ORDINAL=${1:-1}
-TCP_PORT=$((8080 + ORDINAL - 1))
-GRPC_PORT=$((9090 + ORDINAL - 1))
-FIX_PORT=$((5001 + ORDINAL - 1))
+FIX_PORT=$((8080 + ORDINAL - 1))
+ADMIN_PORT=$((9090 + ORDINAL - 1))
 
-echo "Starting order-service-$ORDINAL on TCP:$TCP_PORT, gRPC:$GRPC_PORT, FIX:$FIX_PORT"
+echo "Starting order-service-$ORDINAL on FIX:$FIX_PORT, Admin:$ADMIN_PORT"
 
 # Set environment variables for this instance
 export ORDINAL=$ORDINAL
-export TCP_PORT=$TCP_PORT
-export GRPC_PORT=$GRPC_PORT
-export FIX_SOCKET_PORT=$FIX_PORT
+export FIX_PORT=$FIX_PORT
+export ADMIN_PORT=$ADMIN_PORT
 export FIX_CLIENT_ID="ORDER_SERVICE_$(printf "%03d" $ORDINAL)"
 
 # Create necessary directories
@@ -26,7 +24,9 @@ mkdir -p logs pids
 rm -f pids/order-service-$ORDINAL.pid
 
 # Start the service in background
-./gradlew :java-order-service:run > logs/order-service-$ORDINAL.log 2>&1 &
+cd java-order-service
+../gradlew bootRun > ../logs/order-service-$ORDINAL.log 2>&1 &
+cd ..
 PID=$!
 
 # Store the PID
