@@ -1,0 +1,170 @@
+syntax = "proto3";
+
+package com.example.orderservice;
+
+option java_multiple_files = true;
+option java_package = "com.example.orderservice.grpc";
+option java_outer_classname = "OrderServiceProto";
+
+service OrderAdminService {
+  rpc AddOrder(AddOrderRequest) returns (AddOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+  rpc GetServiceInfo(ServiceInfoRequest) returns (ServiceInfoResponse);
+  rpc ListAllOrders(ListAllOrdersRequest) returns (ListAllOrdersResponse);
+  rpc ListOpenOrders(ListOpenOrdersRequest) returns (ListOpenOrdersResponse);
+  rpc ListCancelledOrRejectedOrders(ListCancelledOrRejectedOrdersRequest) returns (ListCancelledOrRejectedOrdersResponse);
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+  
+  // New RPCs for the demo flow
+  rpc RejectAllOrders(RejectAllOrdersRequest) returns (AdminActionResponse);
+  rpc AcceptAllOrders(AcceptAllOrdersRequest) returns (AdminActionResponse);
+  
+  // FIX Configuration RPCs
+  rpc GetFixConfig(FixConfigRequest) returns (FixConfigResponse);
+}
+
+// FIX Configuration messages
+message FixConfigRequest {
+  string service_name = 1;
+}
+
+message FixConfigResponse {
+  bool success = 1;
+  FixConfig config = 2;
+  string message = 3;
+}
+
+message FixConfig {
+  string socket_host = 1;
+  int32 socket_port = 2;
+  string client_id = 3;
+  string target_comp_id = 4;
+  string sender_comp_id = 5;
+  int32 heartbeat_interval = 6;
+  string fix_version = 7;
+}
+
+// Re-usable response for simple admin actions
+message AdminActionResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Request messages (can be empty)
+message RejectAllOrdersRequest {}
+message AcceptAllOrdersRequest {}
+
+// Add Order messages with FIX fields
+message AddOrderRequest {
+  // FIX Standard Fields
+  string symbol = 1;            // FIX Tag 55 - Symbol
+  string ric = 2;              // FIX Tag 55 - Reuters Instrument Code
+  string side = 3;             // FIX Tag 54 - Side (1=Buy, 2=Sell)
+  int32 order_qty = 4;         // FIX Tag 38 - Order Quantity
+  double price = 5;            // FIX Tag 44 - Price
+  string ord_type = 6;         // FIX Tag 40 - Order Type (1=Market, 2=Limit)
+  string time_in_force = 7;    // FIX Tag 59 - Time In Force (0=Day, 1=GTC, 3=IOC, 4=FOK)
+  
+  // Additional FIX Fields
+  string account = 8;          // FIX Tag 1 - Account
+  string security_type = 9;    // FIX Tag 167 - Security Type
+  string currency = 10;        // FIX Tag 15 - Currency
+  string exchange = 11;        // FIX Tag 207 - Exchange
+  string transact_time = 12;   // FIX Tag 60 - TransactTime
+}
+
+message AddOrderResponse {
+  bool success = 1;
+  string order_id = 2;
+  string message = 3;
+  string fix_message = 4;      // Full FIX message that was sent
+}
+
+// Get Order messages
+message GetOrderRequest {
+  string order_id = 1;
+}
+
+message GetOrderResponse {
+  bool success = 1;
+  Order order = 2;
+  string message = 3;
+}
+
+// List All Orders messages
+message ListAllOrdersRequest {}
+
+message ListAllOrdersResponse {
+  repeated string order_ids = 1;
+}
+
+// List Open Orders messages (Pending status)
+message ListOpenOrdersRequest {}
+
+message ListOpenOrdersResponse {
+  repeated string order_ids = 1;
+}
+
+// List Cancelled or Rejected Orders messages
+message ListCancelledOrRejectedOrdersRequest {}
+
+message ListCancelledOrRejectedOrdersResponse {
+  repeated string order_ids = 1;
+}
+
+message CancelOrderRequest {
+  string order_id = 1;
+}
+
+message CancelOrderResponse {
+  bool success = 1;
+  string message = 2;
+  string fix_message = 3;      // Full FIX cancellation message
+}
+
+message ServiceInfoRequest {}
+
+message ServiceInfoResponse {
+  string service_name = 1;
+  string version = 2;
+  string status = 3;
+  int32 order_count = 4;
+  repeated string available_methods = 5;
+  FixConfig fix_config = 6;    // Include FIX config in service info
+}
+
+message Order {
+  string order_id = 1;
+  
+  // FIX Standard Fields
+  string symbol = 2;           // FIX Tag 55
+  string ric = 3;              // FIX Tag 55 (RIC)
+  string side = 4;             // FIX Tag 54 (1=Buy, 2=Sell)
+  int32 order_qty = 5;         // FIX Tag 38
+  double price = 6;            // FIX Tag 44
+  string ord_type = 7;         // FIX Tag 40
+  string time_in_force = 8;    // FIX Tag 59
+  string account = 9;          // FIX Tag 1
+  string security_type = 10;   // FIX Tag 167
+  string currency = 11;        // FIX Tag 15
+  string exchange = 12;        // FIX Tag 207
+  string transact_time = 13;   // FIX Tag 60
+  
+  OrderStatus status = 14;
+  string created_at = 15;
+  string updated_at = 16;
+  
+  // FIX Message tracking
+  string fix_message = 17;     // Original FIX message
+  string fix_order_id = 18;    // FIX Tag 37 - OrderID from exchange
+}
+
+enum OrderStatus {
+  PENDING = 0;
+  CONFIRMED = 1;
+  CANCELLED = 2;
+  COMPLETED = 3;
+  REJECTED = 4;
+  PARTIALLY_FILLED = 5;       // FIX Tag 150 - ExecType
+  FILLED = 6;                 // FIX Tag 150 - ExecType
+}
