@@ -15,10 +15,9 @@ type ServiceInfo struct {
 // InstanceInfo holds enhanced instance information
 type InstanceInfo struct {
 	*consulapi.CatalogService
-	AdminPort    int
-	GRPCPort     int
-	HealthStatus string
-	Tags         []string
+	AdminPort int
+	GRPCPort  int
+	Tags      []string
 }
 
 // AdminConfig holds configuration for admin operations
@@ -34,6 +33,5 @@ type AdminConfig struct {
 type ServiceDiscovery interface {
 	GetServices() (map[string][]string, error)
 	GetServiceInstances(serviceName string) ([]*InstanceInfo, error)
-	GetHealthyInstances(serviceName string) ([]*InstanceInfo, error)
 	GetInstanceInfo(instance *consulapi.CatalogService) *InstanceInfo
 } 

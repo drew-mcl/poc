@@ -65,7 +65,7 @@ The Java service will:
 - Start gRPC server on port 9090
 - Register with Consul automatically
 - Generate mock orders every 10 seconds
-- Expose health checks for both TCP and gRPC
+- Expose TCP and gRPC endpoints
 
 ### 3. Build and Run Go CLI Tool
 
@@ -137,9 +137,9 @@ The interactive admin tool will:
 
 - **TCP Server**: Exposes order data on port 8080
 - **gRPC Server**: Admin interface on port 9090
-- **Consul Integration**: Automatic registration with health checks
+- **Consul Integration**: Automatic registration with Consul
 - **Mock Data**: Generates random orders automatically
-- **Health Checks**: TCP and gRPC health monitoring
+- **gRPC Support**: Full gRPC server with reflection enabled
 
 ### Go Asgard Admin CLI
 
@@ -213,10 +213,10 @@ GOOS=darwin GOARCH=amd64 go build -o asgard-admin-mac
    - Pick a gRPC method
    - Execute with arguments
 
-### 3. Service Health Demo
+### 3. Service Discovery Demo
 
 1. Start multiple Java service instances
-2. Use `./asgard-admin discover --online-only` to see only healthy instances
+2. Use `./asgard-admin discover` to see all service instances
 3. Use interactive admin to execute functions on specific instances
 
 ## Troubleshooting
@@ -254,12 +254,12 @@ GOOS=darwin GOARCH=amd64 go build -o asgard-admin-mac
          │                       │                       │
          ▼                       ▼                       ▼
    Service Catalog         TCP:8080, gRPC:9090    Remote Execution
-   Health Monitoring       Mock Order Generation    Service Discovery
+   Service Discovery       Mock Order Generation    gRPC Admin Interface
 ```
 
 This demo showcases:
 - Service registration and discovery with Consul
-- Health monitoring and failover
+- Service discovery and management
 - gRPC communication between services
 - CLI-based service management
 - Real-time service monitoring 

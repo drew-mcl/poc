@@ -32,22 +32,22 @@ func GetFixConfig(consulAddr, serviceName string) (*FixConfig, error) {
 		return nil, fmt.Errorf("failed to create Consul client: %v", err)
 	}
 
-	// Get healthy instances for the service
-	instances, _, err := client.Health().Service(serviceName, "", true, nil)
+	// Get all instances for the service
+	instances, _, err := client.Catalog().Service(serviceName, "", nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get healthy instances for %s: %v", serviceName, err)
+		return nil, fmt.Errorf("failed to get instances for %s: %v", serviceName, err)
 	}
 
 	if len(instances) == 0 {
-		return nil, fmt.Errorf("no healthy instances found for service %s", serviceName)
+		return nil, fmt.Errorf("no instances found for service %s", serviceName)
 	}
 
-	// Use the first healthy instance
+	// Use the first instance
 	instance := instances[0]
-	grpcPort := instance.Service.Port
+	grpcPort := instance.ServicePort
 	if grpcPort == 0 {
 		// Try to get gRPC port from metadata
-		if grpcPortStr, exists := instance.Service.Meta["grpc_port"]; exists {
+		if grpcPortStr, exists := instance.ServiceMeta["grpc_port"]; exists {
 			if port, err := strconv.Atoi(grpcPortStr); err == nil {
 				grpcPort = port
 			}
@@ -59,7 +59,7 @@ func GetFixConfig(consulAddr, serviceName string) (*FixConfig, error) {
 	}
 
 	// Connect to the service via gRPC
-	grpcAddr := fmt.Sprintf("%s:%d", instance.Service.Address, grpcPort)
+	grpcAddr := fmt.Sprintf("%s:%d", instance.ServiceAddress, grpcPort)
 	conn, err := grpc.Dial(grpcAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to %s: %v", grpcAddr, err)
@@ -69,7 +69,7 @@ func GetFixConfig(consulAddr, serviceName string) (*FixConfig, error) {
 	// Call the GetFixConfig RPC
 	// Note: This requires the generated gRPC client code
 	// For now, we'll return a default configuration based on service metadata
-	return getDefaultFixConfig(serviceName, instance.Service.Meta), nil
+	return getDefaultFixConfig(serviceName, instance.ServiceMeta), nil
 }
 
 // getDefaultFixConfig creates a default FIX configuration based on service metadata
@@ -140,7 +140,6 @@ var discoverCmd = &cobra.Command{
 
 func init() {
 	discoverCmd.Flags().StringP("consul", "c", "localhost:8500", "Consul address")
-	discoverCmd.Flags().BoolP("online-only", "o", false, "Show only online instances")
 	discoverCmd.Flags().StringP("service", "s", "", "Filter by specific service name")
 }
 
@@ -148,15 +147,14 @@ func init() {
 func getInstanceInfo(id, service, addr string, port int, meta map[string]string, tags []string) *InstanceInfo {
 	info := &InstanceInfo{
 		CatalogService: &consulapi.CatalogService{
-			ServiceID:      id,
-			ServiceName:    service,
-			ServiceAddress: addr,
-			ServicePort:    port,
-			ServiceMeta:    meta,
-			ServiceTags:    tags,
-		},
-		HealthStatus: "unknown",
-	}
+					ServiceID:      id,
+		ServiceName:    service,
+		ServiceAddress: addr,
+		ServicePort:    port,
+		ServiceMeta:    meta,
+		ServiceTags:    tags,
+	},
+}
 
 	if adminPort, exists := meta["admin-port"]; exists {
 		if p, err := strconv.Atoi(adminPort); err == nil {
@@ -175,7 +173,6 @@ func getInstanceInfo(id, service, addr string, port int, meta map[string]string,
 
 func runDiscover(cmd *cobra.Command, args []string) {
 	consulAddr, _ := cmd.Flags().GetString("consul")
-	onlineOnly, _ := cmd.Flags().GetBool("online-only")
 	serviceFilter, _ := cmd.Flags().GetString("service")
 
 	client, err := consulapi.NewClient(&consulapi.Config{Address: consulAddr})
@@ -215,26 +212,25 @@ func runDiscover(cmd *cobra.Command, args []string) {
 	cyan("🔍 Discovered %d services in Consul:\n\n", len(serviceNames))
 
 	for _, serviceName := range serviceNames {
-		healthInstances, _, err := client.Health().Service(serviceName, "", true, nil)
+		instances, _, err := client.Catalog().Service(serviceName, "", nil)
 		if err != nil {
 			red("❌ Failed to get instances for %s: %v\n", serviceName, err)
 			continue
 		}
 
 		green("📦 Service: %s\n", serviceName)
-		blue("   📍 Online instances: %d\n", len(healthInstances))
+		blue("   📍 Instances: %d\n", len(instances))
 
-		if len(healthInstances) > 0 {
-			yellow("   ✅ Online instances:\n")
-			for i, instance := range healthInstances {
-				// CORRECTED: Now passing instance.Service.Tags which is a []string.
+		if len(instances) > 0 {
+			yellow("   📋 Instances:\n")
+			for i, instance := range instances {
 				info := getInstanceInfo(
-					instance.Service.ID,
-					instance.Service.Service,
-					instance.Service.Address,
-					instance.Service.Port,
-					instance.Service.Meta,
-					instance.Service.Tags,
+					instance.ServiceID,
+					instance.ServiceName,
+					instance.ServiceAddress,
+					instance.ServicePort,
+					instance.ServiceMeta,
+					instance.ServiceTags,
 				)
 				yellow("      %d. %s (%s:%d)\n", i+1, info.ServiceID, info.ServiceAddress, info.ServicePort)
 
@@ -248,12 +244,6 @@ func runDiscover(cmd *cobra.Command, args []string) {
 					cyan("         🏷️  Tags: %v\n", info.ServiceTags)
 				}
 			}
-		}
-
-		// Logic for showing offline instances if desired (can be added here)
-		if !onlineOnly {
-			// You would need to make another API call to get all instances
-			// and compare against the healthy list to find the offline ones.
 		}
 		fmt.Println()
 	}

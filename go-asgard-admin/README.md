@@ -1,11 +1,11 @@
 # Asgard Admin - Service Discovery & gRPC Admin Tool
 
-A comprehensive service discovery and admin tool for Consul that allows you to discover services, monitor their health, and interact with their gRPC methods dynamically.
+A comprehensive service discovery and admin tool for Consul that allows you to discover services and interact with their gRPC methods dynamically.
 
 ## Features
 
 - 🔍 **Service Discovery**: Discover all services registered with Consul
-- 📊 **Health Monitoring**: Monitor service health and instance status
+- 📊 **Service Discovery**: Discover and list service instances
 - 🔌 **gRPC Integration**: Connect to services via gRPC reflection
 - 🛠️ **Dynamic Method Execution**: Execute gRPC methods interactively
 - 🏷️ **Metadata Support**: Extract admin ports, gRPC ports from service metadata
@@ -171,7 +171,7 @@ service := &api.AgentServiceRegistration{
 The admin tool integrates seamlessly with existing Consul-registered services:
 
 1. **Automatic Discovery**: Discovers all services registered with Consul
-2. **Health Checking**: Only shows healthy instances by default
+2. **Service Discovery**: Shows all registered service instances
 3. **Metadata Extraction**: Automatically extracts admin/gRPC ports from metadata
 4. **gRPC Reflection**: Uses gRPC reflection to discover available methods
 5. **Dynamic Execution**: Allows interactive execution of gRPC methods

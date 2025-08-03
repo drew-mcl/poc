@@ -174,26 +174,25 @@ func selectService(client *consulapi.Client, reader *bufio.Reader, targetService
 }
 
 func selectInstance(client *consulapi.Client, reader *bufio.Reader, serviceName string, targetInstance string, autoSelect bool) (*InstanceInfo, error) {
-	instances, _, err := client.Health().Service(serviceName, "", true, nil)
+	instances, _, err := client.Catalog().Service(serviceName, "", nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get healthy instances for %s: %v", serviceName, err)
+		return nil, fmt.Errorf("failed to get instances for %s: %v", serviceName, err)
 	}
 	if len(instances) == 0 {
-		red("❌ No healthy instances found for %s\n", serviceName)
+		red("❌ No instances found for %s\n", serviceName)
 		return nil, nil
 	}
 
 	var instanceInfos []*InstanceInfo
 	for _, instance := range instances {
 		info := getInstanceInfo(
-			instance.Service.ID,
-			instance.Service.Service,
-			instance.Service.Address,
-			instance.Service.Port,
-			instance.Service.Meta,
-			instance.Service.Tags,
+			instance.ServiceID,
+			instance.ServiceName,
+			instance.ServiceAddress,
+			instance.ServicePort,
+			instance.ServiceMeta,
+			instance.ServiceTags,
 		)
-		info.HealthStatus = "passing"
 		instanceInfos = append(instanceInfos, info)
 	}
 
@@ -210,10 +209,10 @@ func selectInstance(client *consulapi.Client, reader *bufio.Reader, serviceName 
 				return instance, nil
 			}
 		}
-		return nil, fmt.Errorf("target instance '%s' not found or is not healthy for service '%s'", targetInstance, serviceName)
+		return nil, fmt.Errorf("target instance '%s' not found for service '%s'", targetInstance, serviceName)
 	}
 
-	cyan("\n📦 Online instances for %s:\n", serviceName)
+	cyan("\n📦 Instances for %s:\n", serviceName)
 	for i, instance := range instanceInfos {
 		yellow("  %d. %s (%s:%d)\n", i+1, instance.ServiceID, instance.ServiceAddress, instance.ServicePort)
 		if instance.GRPCPort > 0 {

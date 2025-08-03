@@ -1,0 +1,316 @@
+Starting a Gradle Daemon, 11 busy and 1 incompatible and 5 stopped Daemons could not be reused, use --status for details
+Reusing configuration cache.
+> Task :java-order-service:extractProto UP-TO-DATE
+> Task :java-order-service:extractIncludeProto UP-TO-DATE
+> Task :java-order-service:processResources UP-TO-DATE
+> Task :java-order-service:generateProto UP-TO-DATE
+> Task :java-order-service:compileJava UP-TO-DATE
+> Task :java-order-service:classes UP-TO-DATE
+
+> Task :java-order-service:run
+16:32:16.137 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for SERVICE_NAME: order-service
+16:32:16.138 [main] INFO  c.example.orderservice.ServiceConfig - Using environment value for ORDINAL: 2
+16:32:16.140 [main] INFO  c.example.orderservice.ServiceConfig - Using environment value for TCP_PORT: 8091
+16:32:16.140 [main] INFO  c.example.orderservice.ServiceConfig - Using environment value for GRPC_PORT: 9101
+16:32:16.140 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for CONSUL_HOST: localhost
+16:32:16.140 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for CONSUL_PORT: 8500
+16:32:16.140 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for FIX_SOCKET_HOST: localhost
+16:32:16.140 [main] INFO  c.example.orderservice.ServiceConfig - Using environment value for FIX_SOCKET_PORT: 5002
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using environment value for FIX_CLIENT_ID: ORDER_SERVICE_002
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for FIX_TARGET_COMP_ID: EXCHANGE
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for FIX_SENDER_COMP_ID: ORDER_SERVICE
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for FIX_HEARTBEAT_INTERVAL: 30
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for FIX_VERSION: FIX.4.4
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for MOCK_ORDER_INITIAL_DELAY: 5
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for MOCK_ORDER_INTERVAL: 10
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for MOCK_ORDER_ENABLED: true
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Using default value for SERVICE_TAGS: java,order-service,grpc,fix
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - === Service Configuration ===
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Service Name: order-service
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Ordinal: 2
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Service ID: order-service-2
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - TCP Port: 8091
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - gRPC Port: 9101
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Consul Address: localhost:8500
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - FIX Socket Host: localhost
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - FIX Socket Port: 5002
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - FIX Client ID: ORDER_SERVICE_002
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - FIX Target Comp ID: EXCHANGE
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - FIX Sender Comp ID: ORDER_SERVICE
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - FIX Heartbeat Interval: 30
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - FIX Version: FIX.4.4
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Mock Order Enabled: true
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Mock Order Initial Delay: 5
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Mock Order Interval: 10
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - Service Tags: java, order-service, grpc, fix
+16:32:16.141 [main] INFO  c.example.orderservice.ServiceConfig - =============================
+16:32:16.152 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000001 - BUY INTC 102 shares @ ${:.2f}
+16:32:16.152 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000002 - BUY AVGO 849 shares @ ${:.2f}
+16:32:16.152 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000003 - BUY KLAC 337 shares @ ${:.2f}
+16:32:16.153 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000004 - BUY MU 1051 shares @ ${:.2f}
+16:32:16.153 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000005 - SELL TXN 1058 shares @ ${:.2f}
+16:32:16.153 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000006 - SELL MSFT 317 shares @ ${:.2f}
+16:32:16.153 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000007 - BUY MRVL 926 shares @ ${:.2f}
+16:32:16.154 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000008 - BUY META 306 shares @ ${:.2f}
+16:32:16.154 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000009 - SELL ADBE 737 shares @ ${:.2f}
+16:32:16.154 [main] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000010 - BUY QCOM 1013 shares @ ${:.2f}
+16:32:16.420 [main] INFO  c.e.o.OrderServiceApplication - Starting Order Service (ID: order-service-2)...
+16:32:16.420 [main] INFO  c.example.orderservice.tcp.TcpServer - TCP server started on port 8091
+16:32:16.421 [main] INFO  c.e.o.OrderServiceApplication - TCP server started on port 8091
+16:32:16.448 [main] INFO  c.e.orderservice.grpc.GrpcServer - gRPC server started on port 9101
+16:32:16.448 [main] INFO  c.e.o.OrderServiceApplication - gRPC server started on port 9101
+16:32:16.500 [main] INFO  c.e.o.consul.ConsulRegistration - Successfully registered FIX order service 'order-service' with Consul (TCP:8091, gRPC:9101, FIX:5002)
+16:32:16.500 [main] INFO  c.e.o.OrderServiceApplication - Registered with Consul
+16:32:16.501 [main] INFO  c.e.o.OrderServiceApplication - Order Service started successfully
+16:32:16.501 [main] INFO  c.e.o.OrderServiceApplication - Order Service is running. Press Ctrl+C to stop.
+16:32:21.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000011 - SELL META 841 shares @ ${:.2f}
+16:32:21.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:32:31.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000012 - SELL TER 1076 shares @ ${:.2f}
+16:32:31.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:32:41.503 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000013 - BUY META 328 shares @ ${:.2f}
+16:32:41.503 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:32:51.502 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000014 - SELL ORCL 873 shares @ ${:.2f}
+16:32:51.503 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:33:01.503 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000015 - SELL MRVL 110 shares @ ${:.2f}
+16:33:01.503 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:33:11.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000016 - BUY TXN 509 shares @ ${:.2f}
+16:33:11.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:33:21.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000017 - SELL ADI 527 shares @ ${:.2f}
+16:33:21.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:33:31.509 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000018 - SELL TXN 681 shares @ ${:.2f}
+16:33:31.510 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:33:41.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000019 - BUY ORCL 352 shares @ ${:.2f}
+16:33:41.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:33:51.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000020 - BUY MCHP 425 shares @ ${:.2f}
+16:33:51.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:34:01.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000021 - SELL COHR 265 shares @ ${:.2f}
+16:34:01.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:34:11.504 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000022 - BUY COHR 1063 shares @ ${:.2f}
+16:34:11.504 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:34:21.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000023 - SELL ADI 680 shares @ ${:.2f}
+16:34:21.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:34:31.502 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000024 - BUY ADI 458 shares @ ${:.2f}
+16:34:31.502 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:34:41.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000025 - BUY SWKS 706 shares @ ${:.2f}
+16:34:41.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:34:51.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000026 - BUY MCHP 529 shares @ ${:.2f}
+16:34:51.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:01.503 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000027 - SELL COHR 846 shares @ ${:.2f}
+16:35:01.503 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:11.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000028 - SELL ASML 183 shares @ ${:.2f}
+16:35:11.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:21.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000029 - SELL ASML 551 shares @ ${:.2f}
+16:35:21.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:31.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000030 - SELL NFLX 380 shares @ ${:.2f}
+16:35:31.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:41.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000031 - SELL QCOM 453 shares @ ${:.2f}
+16:35:41.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:51.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000032 - SELL LRCX 845 shares @ ${:.2f}
+16:35:51.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:01.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000033 - BUY META 529 shares @ ${:.2f}
+16:36:01.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:11.503 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000034 - SELL LRCX 921 shares @ ${:.2f}
+16:36:11.503 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:21.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000035 - SELL AMZN 715 shares @ ${:.2f}
+16:36:21.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:31.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000036 - SELL AVGO 450 shares @ ${:.2f}
+16:36:31.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:41.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000037 - SELL AMAT 418 shares @ ${:.2f}
+16:36:41.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:51.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000038 - SELL GOOGL 364 shares @ ${:.2f}
+16:36:51.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:01.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000039 - BUY MCHP 198 shares @ ${:.2f}
+16:37:01.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:11.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000040 - SELL CRM 652 shares @ ${:.2f}
+16:37:11.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:21.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000041 - SELL COHR 933 shares @ ${:.2f}
+16:37:21.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:31.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000042 - SELL AMZN 631 shares @ ${:.2f}
+16:37:31.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:41.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000043 - SELL TSM 208 shares @ ${:.2f}
+16:37:41.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:51.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000044 - SELL SWKS 533 shares @ ${:.2f}
+16:37:51.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:01.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000045 - SELL ENTG 1089 shares @ ${:.2f}
+16:38:01.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:11.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000046 - SELL TSLA 435 shares @ ${:.2f}
+16:38:11.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:21.504 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000047 - BUY MU 700 shares @ ${:.2f}
+16:38:21.504 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:31.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000048 - BUY AVGO 506 shares @ ${:.2f}
+16:38:31.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:41.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000049 - BUY NVDA 430 shares @ ${:.2f}
+16:38:41.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:51.503 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000050 - SELL TXN 239 shares @ ${:.2f}
+16:38:51.503 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:01.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000051 - SELL ADI 790 shares @ ${:.2f}
+16:39:01.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:11.503 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000052 - BUY NVDA 327 shares @ ${:.2f}
+16:39:11.503 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:21.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000053 - BUY META 1030 shares @ ${:.2f}
+16:39:21.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:31.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000054 - SELL MSFT 1086 shares @ ${:.2f}
+16:39:31.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:41.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000055 - BUY AMZN 150 shares @ ${:.2f}
+16:39:41.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:51.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000056 - SELL KLAC 436 shares @ ${:.2f}
+16:39:51.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:01.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000057 - BUY MCHP 110 shares @ ${:.2f}
+16:40:01.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:11.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000058 - BUY QCOM 604 shares @ ${:.2f}
+16:40:11.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:21.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000059 - SELL QCOM 461 shares @ ${:.2f}
+16:40:21.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:31.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000060 - SELL ADBE 883 shares @ ${:.2f}
+16:40:31.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:41.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000061 - BUY NFLX 874 shares @ ${:.2f}
+16:40:41.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:51.504 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000062 - BUY ASML 993 shares @ ${:.2f}
+16:40:51.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:01.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000063 - SELL NVDA 173 shares @ ${:.2f}
+16:41:01.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:11.507 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000064 - SELL CRM 143 shares @ ${:.2f}
+16:41:11.507 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:21.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000065 - SELL AAPL 1091 shares @ ${:.2f}
+16:41:21.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:31.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000066 - SELL MRVL 133 shares @ ${:.2f}
+16:41:31.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:41.509 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000067 - BUY MU 677 shares @ ${:.2f}
+16:41:41.509 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:51.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000068 - SELL MRVL 286 shares @ ${:.2f}
+16:41:51.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:01.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000069 - BUY ASML 508 shares @ ${:.2f}
+16:42:01.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:11.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000070 - SELL MU 530 shares @ ${:.2f}
+16:42:11.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:21.508 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000071 - SELL ENTG 531 shares @ ${:.2f}
+16:42:21.508 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:31.504 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000072 - SELL AMAT 871 shares @ ${:.2f}
+16:42:31.504 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:41.504 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000073 - SELL META 1056 shares @ ${:.2f}
+16:42:41.504 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:51.504 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000074 - SELL TSLA 764 shares @ ${:.2f}
+16:42:51.504 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:01.506 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000075 - SELL CRM 1071 shares @ ${:.2f}
+16:43:01.506 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:11.505 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000076 - BUY MRVL 940 shares @ ${:.2f}
+16:43:11.505 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:21.509 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000077 - BUY AVGO 277 shares @ ${:.2f}
+16:43:21.509 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000078 - BUY INTC 793 shares @ ${:.2f}
+16:42:37.431 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:47.432 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000079 - BUY GOOGL 652 shares @ ${:.2f}
+16:42:47.432 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:57.432 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000080 - BUY QCOM 548 shares @ ${:.2f}
+16:42:57.432 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:07.431 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000081 - SELL MU 1007 shares @ ${:.2f}
+16:43:07.431 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:17.430 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000082 - BUY TXN 414 shares @ ${:.2f}
+16:43:17.430 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+ck order
+16:35:29.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000083 - BUY ADBE 728 shares @ ${:.2f}
+16:35:29.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:39.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000084 - BUY QCOM 1057 shares @ ${:.2f}
+16:35:39.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:49.064 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000085 - BUY LRCX 609 shares @ ${:.2f}
+16:35:49.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:35:59.060 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000086 - SELL ADI 538 shares @ ${:.2f}
+16:35:59.060 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:09.065 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000087 - BUY AVGO 845 shares @ ${:.2f}
+16:36:09.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:19.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000088 - BUY TXN 413 shares @ ${:.2f}
+16:36:19.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:29.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000089 - BUY CRM 667 shares @ ${:.2f}
+16:36:29.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:39.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000090 - SELL INTC 390 shares @ ${:.2f}
+16:36:39.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:49.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000091 - BUY META 478 shares @ ${:.2f}
+16:36:49.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:36:59.064 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000092 - SELL META 1024 shares @ ${:.2f}
+16:36:59.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:09.064 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000093 - BUY MCHP 733 shares @ ${:.2f}
+16:37:09.065 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:19.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000094 - SELL ASML 112 shares @ ${:.2f}
+16:37:19.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:29.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000095 - BUY TXN 665 shares @ ${:.2f}
+16:37:29.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:39.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000096 - SELL MRVL 624 shares @ ${:.2f}
+16:37:39.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:49.064 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000097 - SELL SWKS 202 shares @ ${:.2f}
+16:37:49.065 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:37:59.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000098 - SELL TXN 1090 shares @ ${:.2f}
+16:37:59.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:09.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000099 - SELL CRM 390 shares @ ${:.2f}
+16:38:09.067 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:19.062 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000100 - SELL INTC 799 shares @ ${:.2f}
+16:38:19.062 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:29.065 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000101 - SELL TSM 240 shares @ ${:.2f}
+16:38:29.065 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:39.065 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000102 - SELL ORCL 266 shares @ ${:.2f}
+16:38:39.065 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:49.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000103 - SELL GOOGL 144 shares @ ${:.2f}
+16:38:49.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:38:59.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000104 - SELL META 686 shares @ ${:.2f}
+16:38:59.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:09.067 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000105 - SELL TER 1028 shares @ ${:.2f}
+16:39:09.068 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:19.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000106 - SELL META 1008 shares @ ${:.2f}
+16:39:19.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:29.064 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000107 - SELL ASML 515 shares @ ${:.2f}
+16:39:29.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:39.070 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000108 - SELL MRVL 962 shares @ ${:.2f}
+16:39:39.070 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:49.068 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000109 - BUY AMD 161 shares @ ${:.2f}
+16:39:49.069 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:39:59.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000110 - BUY MSFT 949 shares @ ${:.2f}
+16:39:59.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:09.065 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000111 - SELL SWKS 812 shares @ ${:.2f}
+16:40:09.065 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:19.062 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000112 - BUY TSLA 458 shares @ ${:.2f}
+16:40:19.062 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:29.064 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000113 - BUY AMZN 498 shares @ ${:.2f}
+16:40:29.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:39.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000114 - BUY ENTG 789 shares @ ${:.2f}
+16:40:39.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:49.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000115 - SELL CRM 892 shares @ ${:.2f}
+16:40:49.067 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:40:59.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000116 - SELL MU 549 shares @ ${:.2f}
+16:40:59.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:09.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000117 - SELL ADI 347 shares @ ${:.2f}
+16:41:09.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:19.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000118 - BUY QCOM 757 shares @ ${:.2f}
+16:41:19.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:29.064 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000119 - SELL NFLX 965 shares @ ${:.2f}
+16:41:29.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:39.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000120 - BUY AMD 848 shares @ ${:.2f}
+16:41:39.064 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:49.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000121 - BUY MU 611 shares @ ${:.2f}
+16:41:49.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:41:59.062 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000122 - BUY MCHP 676 shares @ ${:.2f}
+16:41:59.062 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:09.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000123 - BUY MRVL 202 shares @ ${:.2f}
+16:42:09.066 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:19.067 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000124 - SELL MSFT 774 shares @ ${:.2f}
+16:42:19.067 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:29.063 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000125 - SELL AMAT 308 shares @ ${:.2f}
+16:42:29.063 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:39.066 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000126 - SELL INTC 230 shares @ ${:.2f}
+16:42:39.067 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:49.065 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000127 - SELL NVDA 1098 shares @ ${:.2f}
+16:42:49.065 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:59.062 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000128 - SELL KLAC 894 shares @ ${:.2f}
+16:42:59.062 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:09.062 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000129 - SELL QCOM 609 shares @ ${:.2f}
+16:43:09.062 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:19.067 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000130 - BUY ADI 884 shares @ ${:.2f}
+16:43:19.067 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+8 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000131 - SELL MU 171 shares @ ${:.2f}
+16:42:40.298 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:42:50.298 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000132 - SELL AMAT 817 shares @ ${:.2f}
+16:42:50.298 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:00.298 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000133 - BUY TER 969 shares @ ${:.2f}
+16:43:00.298 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:10.294 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000134 - BUY ORCL 436 shares @ ${:.2f}
+16:43:10.294 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
+16:43:20.299 [pool-3-thread-1] INFO  c.example.orderservice.OrderManager - Generated mock FIX order: ORDER-002-000135 - SELL QCOM 885 shares @ ${:.2f}
+16:43:20.299 [pool-3-thread-1] DEBUG c.e.o.OrderServiceApplication - Generated mock order
