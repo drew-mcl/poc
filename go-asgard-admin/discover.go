@@ -14,7 +14,34 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+// -----------------------------------------------------------------------------
+// helper formatting
+// -----------------------------------------------------------------------------
+func formatHealthStatus(status string) string {
+	switch status {
+	case "passing":
+		return color.HiGreenString("✔ PASS")
+	case "warning":
+		return color.HiYellowString("⚠ WARN")
+	case "critical":
+		return color.HiRedString("✖ FAIL")
+	default:
+		return color.HiWhiteString("? UNKNOWN")
+	}
+}
 
+func formatCheckStatus(status string) string {
+	switch status {
+	case "passing":
+		return color.GreenString("✔")
+	case "warning":
+		return color.YellowString("⚠")
+	case "critical":
+		return color.RedString("✖")
+	default:
+		return color.WhiteString("?")
+	}
+}
 
 // GetFixConfig retrieves FIX configuration for a specific service via Consul discovery
 func GetFixConfig(consulAddr, serviceName string) (*FixConfig, error) {
@@ -122,33 +149,34 @@ func GetFixConfigForService(consulAddr, serviceName string) {
 	fmt.Printf("  FIX Version: %s\n", config.FixVersion)
 }
 
-
-
+// -----------------------------------------------------------------------------
+// cobra command definition
+// -----------------------------------------------------------------------------
 var discoverCmd = &cobra.Command{
 	Use:   "discover",
-	Short: "Discover services with health status and checks",
+	Short: "List Consul services and their health",
 	Long:  "Lists all services registered with Consul and shows their health status, instances, and health checks",
-	Run:   runDiscover,
+	RunE:  runDiscover,
 }
 
 func init() {
-	discoverCmd.Flags().StringP("consul", "c", "localhost:8500", "Consul address")
-	discoverCmd.Flags().StringP("service", "s", "", "Filter by specific service name")
-	discoverCmd.Flags().BoolP("all", "", false, "Show all instances (including unhealthy) - default is healthy only")
+	discoverCmd.Flags().StringP("consul", "c", "localhost:8500", "Consul HTTP address")
+	discoverCmd.Flags().StringP("service", "s", "", "Filter by service name")
+	discoverCmd.Flags().Bool("all", false, "Include unhealthy instances as well")
 }
 
 // CORRECTED: The 'tags' parameter is now correctly defined as []string.
 func getInstanceInfo(id, service, addr string, port int, meta map[string]string, tags []string) *InstanceInfo {
 	info := &InstanceInfo{
 		CatalogService: &consulapi.CatalogService{
-					ServiceID:      id,
-		ServiceName:    service,
-		ServiceAddress: addr,
-		ServicePort:    port,
-		ServiceMeta:    meta,
-		ServiceTags:    tags,
-	},
-}
+			ServiceID:      id,
+			ServiceName:    service,
+			ServiceAddress: addr,
+			ServicePort:    port,
+			ServiceMeta:    meta,
+			ServiceTags:    tags,
+		},
+	}
 
 	if adminPort, exists := meta["admin-port"]; exists {
 		if p, err := strconv.Atoi(adminPort); err == nil {
@@ -165,199 +193,180 @@ func getInstanceInfo(id, service, addr string, port int, meta map[string]string,
 	return info
 }
 
-func runDiscover(cmd *cobra.Command, args []string) {
+// -----------------------------------------------------------------------------
+// command implementation
+// -----------------------------------------------------------------------------
+func runDiscover(cmd *cobra.Command, _ []string) error {
 	consulAddr, _ := cmd.Flags().GetString("consul")
-	serviceFilter, _ := cmd.Flags().GetString("service")
+	filter, _ := cmd.Flags().GetString("service")
 	showAll, _ := cmd.Flags().GetBool("all")
 
 	client, err := consulapi.NewClient(&consulapi.Config{Address: consulAddr})
 	if err != nil {
-		log.Fatalf("Failed to create Consul client: %v", err)
+		return fmt.Errorf("create consul client: %w", err)
 	}
-
-	// CORRECTED: This is the proper way to define the color functions.
-	blue := color.New(color.FgBlue).Printf
-	yellow := color.New(color.FgYellow).Printf
-	red := color.New(color.FgRed).Printf
-	cyan := color.New(color.FgCyan).Printf
-	magenta := color.New(color.FgMagenta).Printf
 
 	services, _, err := client.Catalog().Services(nil)
 	if err != nil {
-		log.Fatalf("Failed to get services: %v", err)
+		return fmt.Errorf("list services: %w", err)
 	}
 
-	var serviceNames []string
-	for serviceName := range services {
-		if serviceFilter == "" || serviceName == serviceFilter {
-			serviceNames = append(serviceNames, serviceName)
+	var names []string
+	for name := range services {
+		if name == "consul" {
+			continue
+		}
+		if filter == "" || filter == name {
+			names = append(names, name)
 		}
 	}
-	sort.Strings(serviceNames)
+	sort.Strings(names)
 
-	if len(serviceNames) == 0 {
-		if serviceFilter != "" {
-			yellow("🔍 No services found matching filter: %s\n", serviceFilter)
+	if len(names) == 0 {
+		if filter != "" {
+			color.Yellow("No services match %q", filter)
 		} else {
-			yellow("🔍 No services found in Consul\n")
+			color.Yellow("No services found in Consul")
 		}
-		return
+		return nil
 	}
 
-	cyan("🔍 Discovered %d services in Consul:\n\n", len(serviceNames))
+	color.Cyan("Discovered %d service(s)\n", len(names))
 
-	for _, serviceName := range serviceNames {
-		// Get instances based on showAll flag
-		var instances []*consulapi.ServiceEntry
-		var err error
-		
-		if showAll {
-			// Get all instances from catalog (including unhealthy)
-			catalogInstances, _, err := client.Catalog().Service(serviceName, "", nil)
-			if err != nil {
-				red("❌ Failed to get instances for %s: %v\n", serviceName, err)
+	for _, name := range names {
+		if err := renderService(client, name, showAll); err != nil {
+			color.Red("   error: %v", err)
+		}
+	}
+	return nil
+}
+
+// renderService prints one service block.
+func renderService(client *consulapi.Client, service string, showAll bool) error {
+	var entries []*consulapi.ServiceEntry
+	var err error
+
+	if showAll {
+		cats, _, err := client.Catalog().Service(service, "", nil)
+		if err != nil {
+			return err
+		}
+		for _, c := range cats {
+			entries = append(entries, &consulapi.ServiceEntry{Service: &consulapi.AgentService{
+				ID:       c.ServiceID,
+				Service:  c.ServiceName,
+				Address:  c.ServiceAddress,
+				Port:     c.ServicePort,
+				Meta:     c.ServiceMeta,
+				Tags:     c.ServiceTags,
+			}})
+		}
+	} else {
+		entries, _, err = client.Health().Service(service, "", true, nil)
+		if err != nil {
+			return err
+		}
+	}
+
+	// aggregate health
+	agg := "passing"
+	for _, e := range entries {
+		for _, ch := range e.Checks {
+			if ch.ServiceID != e.Service.ID {
 				continue
 			}
-			// Convert to ServiceEntry format for consistency
-			for _, catInstance := range catalogInstances {
-				instances = append(instances, &consulapi.ServiceEntry{
-					Service: &consulapi.AgentService{
-						ID:      catInstance.ServiceID,
-						Service:  catInstance.ServiceName,
-						Address:  catInstance.ServiceAddress,
-						Port:     catInstance.ServicePort,
-						Meta:     catInstance.ServiceMeta,
-						Tags:     catInstance.ServiceTags,
-					},
-					Checks: []*consulapi.HealthCheck{}, // Will be populated below
-				})
+			switch ch.Status {
+			case "critical":
+				agg = "critical"
+			case "warning":
+				if agg != "critical" {
+					agg = "warning"
+				}
 			}
-		} else {
-			// Get only healthy instances (default behavior)
-			instances, _, err = client.Health().Service(serviceName, "", true, nil)
-			if err != nil {
-				red("❌ Failed to get healthy instances for %s: %v\n", serviceName, err)
+		}
+	}
+
+	fmt.Printf("\n%s %s\n", color.New(color.Bold, color.FgHiBlue).Sprint(service), formatHealthStatus(agg))
+
+	if showAll {
+		color.Cyan("   (Showing all instances including unhealthy)\n")
+	} else {
+		color.Cyan("   (Showing only healthy instances - use --all to see all)\n")
+	}
+
+	if len(entries) == 0 {
+		color.Red("   no instances registered")
+		return nil
+	}
+
+	for i, e := range entries {
+		idx := color.HiMagentaString("#%d", i+1)
+		addr := fmt.Sprintf("%s:%d", e.Service.Address, e.Service.Port)
+		fmt.Printf("   %s %-30s %s\n", idx, addr, formatCheckStatus(instanceStatus(e)))
+
+		// admin port
+		adminPort := e.Service.Port
+		if p, ok := e.Service.Meta["admin-port"]; ok {
+			if n, err := strconv.Atoi(p); err == nil {
+				adminPort = n
+			}
+		}
+		fmt.Printf("      admin  : %s:%d\n", e.Service.Address, adminPort)
+
+		// meta
+		if len(e.Service.Meta) > 0 {
+			keys := make([]string, 0, len(e.Service.Meta))
+			for k := range e.Service.Meta {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
+			var kv []string
+			for _, k := range keys {
+				kv = append(kv, fmt.Sprintf("%s=%s", k, e.Service.Meta[k]))
+			}
+			fmt.Printf("      meta   : %s\n", strings.Join(kv, ", "))
+		}
+
+		// tags
+		if len(e.Service.Tags) > 0 {
+			fmt.Printf("      tags   : %s\n", strings.Join(e.Service.Tags, ", "))
+		}
+
+		// checks
+		for _, ch := range e.Checks {
+			if ch.ServiceID != e.Service.ID {
 				continue
 			}
-		}
-
-		// Determine overall service status
-		status := "passing"
-		criticalCount := 0
-		warningCount := 0
-		
-		for _, instance := range instances {
-			for _, check := range instance.Checks {
-				if check.ServiceID == instance.Service.ID {
-					switch check.Status {
-					case "critical":
-						criticalCount++
-					case "warning":
-						warningCount++
-					}
-				}
+			glyph := formatCheckStatus(ch.Status)
+			out := strings.TrimSpace(ch.Output)
+			if len(out) > 60 {
+				out = out[:57] + "..."
 			}
+			fmt.Printf("         %s %s (%s)\n", glyph, ch.Name, out)
 		}
-		
-		if criticalCount > 0 {
-			status = "critical"
-		} else if warningCount > 0 {
-			status = "warning"
-		}
-		
-		statusIcon := formatHealthStatus(status)
-		blue("📦 Service: %s %s\n", serviceName, statusIcon)
-		
-		if showAll {
-			cyan("   (Showing all instances including unhealthy)\n")
-		} else {
-			cyan("   (Showing only healthy instances - use --all to see all)\n")
-		}
-		
-		if len(instances) > 0 {
-			yellow("   📍 Instances: %d\n", len(instances))
-			
-			for i, instance := range instances {
-				// Get health status for this instance
-				healthStatus := "✅ healthy"
-				
-				// Always check health status for display purposes
-				// Use the service health endpoint to get accurate health status
-				serviceHealth, _, err := client.Health().Service(instance.Service.Service, "", false, nil)
-				if err == nil {
-					hasCritical := false
-					hasWarning := false
-					for _, healthEntry := range serviceHealth {
-						if healthEntry.Service.ID == instance.Service.ID {
-							for _, check := range healthEntry.Checks {
-								if check.ServiceID == instance.Service.ID {
-									switch check.Status {
-									case "critical":
-										hasCritical = true
-									case "warning":
-										hasWarning = true
-									}
-								}
-							}
-						}
-					}
-					if hasCritical {
-						healthStatus = "❌ critical"
-					} else if hasWarning {
-						healthStatus = "⚠️  warning"
-					} else {
-						healthStatus = "✅ healthy"
-					}
-				} else {
-					healthStatus = "❓ unknown"
-				}
-				
+	}
+	return nil
+}
 
-				
-				// Get admin port from metadata
-				adminPort := instance.Service.Port // fallback to main port
-				if adminPortStr, exists := instance.Service.Meta["admin-port"]; exists {
-					if port, err := strconv.Atoi(adminPortStr); err == nil {
-						adminPort = port
-					}
-				}
-				
-				yellow("      %d. %s (%s:%d) %s\n", i+1, instance.Service.ID, instance.Service.Address, instance.Service.Port, healthStatus)
-				cyan("         🔌 Admin: %s:%d\n", instance.Service.Address, adminPort)
-				
-				// Show metadata
-				if len(instance.Service.Meta) > 0 {
-					cyan("         🔧 Metadata:\n")
-					for key, value := range instance.Service.Meta {
-						cyan("            %s: %s\n", key, value)
-					}
-				}
-				
-				// Show tags
-				if len(instance.Service.Tags) > 0 {
-					cyan("         🏷️  Tags: %v\n", instance.Service.Tags)
-				}
-				
-				// Show health checks for this instance
-				cyan("         🔍 Health Checks:\n")
-				for _, check := range instance.Checks {
-					if check.ServiceID == instance.Service.ID {
-						checkIcon := formatCheckStatus(check.Status)
-						cyan("            %s %s: %s\n", checkIcon, check.Name, check.Status)
-						if check.Output != "" {
-							// Truncate long output
-							output := check.Output
-							if len(output) > 100 {
-								output = output[:97] + "..."
-							}
-							magenta("               Output: %s\n", output)
-						}
-					}
-				}
-			}
-		} else {
-			red("   ❌ No instances found\n")
+func instanceStatus(e *consulapi.ServiceEntry) string {
+	crit, warn := false, false
+	for _, ch := range e.Checks {
+		if ch.ServiceID != e.Service.ID {
+			continue
 		}
-		fmt.Println()
+		switch ch.Status {
+		case "critical":
+			crit = true
+		case "warning":
+			warn = true
+		}
+	}
+	switch {
+	case crit:
+		return "critical"
+	case warn:
+		return "warning"
+	default:
+		return "passing"
 	}
 }

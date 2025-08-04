@@ -39,30 +39,4 @@ func getServiceHealth(client *consulapi.Client, serviceName string) (*ServiceHea
 		Instances:   instances,
 		Status:      status,
 	}, nil
-}
-
-func formatHealthStatus(status string) string {
-	switch status {
-	case "passing":
-		return "✅ passing"
-	case "warning":
-		return "⚠️  warning"
-	case "critical":
-		return "❌ critical"
-	default:
-		return "❓ unknown"
-	}
-}
-
-func formatCheckStatus(status string) string {
-	switch status {
-	case "passing":
-		return "✅"
-	case "warning":
-		return "⚠️"
-	case "critical":
-		return "❌"
-	default:
-		return "❓"
-	}
 } 
