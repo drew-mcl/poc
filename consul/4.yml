@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "consul-servers.fullname" . }}
+spec:
+  serviceName: {{ include "consul-servers.fullname" . }}-headless
+  replicas: {{ .Values.replicaCount }}
+  podManagementPolicy: OrderedReady      # smoother first cluster-boot
+  selector:
+    matchLabels: { app: consul, component: server }
+  template:
+    metadata:
+      labels: { app: consul, component: server }
+    spec:
+      serviceAccountName: {{ include "consul-servers.fullname" . }}
+      securityContext: { fsGroup: 1000 } # run as non-root
+      containers:
+      - name: consul
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        args: ["agent", "-config-file=/consul/config/server.hcl", "-ui"]
+        env:
+        - name: POD_IP
+          valueFrom: { fieldRef: { fieldPath: status.podIP } }
+        ports:
+        - { name: rpc,        containerPort: 8300, protocol: TCP }
+        - { name: serf,       containerPort: 8301, protocol: TCP }
+        - { name: serf-udp,   containerPort: 8301, protocol: UDP }
+        - { name: wan,        containerPort: 8302, protocol: TCP }
+        - { name: wan-udp,    containerPort: 8302, protocol: UDP }
+        - { name: http,       containerPort: 8500, protocol: TCP }
+        - { name: dns,        containerPort: 8600, protocol: UDP }
+        volumeMounts:
+        - { name: config, mountPath: /consul/config }
+        - { name: data,   mountPath: /consul/data }
+        readinessProbe:
+          httpGet: { path: /v1/status/leader, port: http }
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "consul-servers.fullname" . }}-config
+  volumeClaimTemplates:
+  - metadata: { name: data }
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: {{ .Values.storageClass }}
+      resources:
+        requests: { storage: {{ .Values.storageSize }} }

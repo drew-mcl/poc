@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "consul-servers.fullname" . }}-headless
+  labels: { app: consul, component: server }
+spec:
+  clusterIP: None               # <- headless for StatefulSet peer DNS
+  publishNotReadyAddresses: true
+  selector: { app: consul, component: server }
+  ports:
+  - { name: rpc,   port: 8300, targetPort: rpc,   protocol: TCP }
+  - { name: serf,  port: 8301, targetPort: serf,  protocol: TCP }
+  - { name: serf-udp, port: 8301, targetPort: serf, protocol: UDP }
+  - { name: http,  port: 8500, targetPort: http,  protocol: TCP }
+  - { name: dns,   port: 8600, targetPort: dns,   protocol: UDP }

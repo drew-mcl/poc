@@ -1,0 +1,13 @@
+# ---------- Global ----------
+datacenter: dc1
+
+image:
+  repository: hashicorp/consul
+  tag: "1.21.3"
+
+replicaCount: 3                # must match bootstrapExpect below
+storageClass: fast-ssd
+storageSize: 10Gi
+
+# Static gossip secret or ACL tokens can be mounted from a Secret later
+# gossipKey: REPLACE_ME_BASE64
